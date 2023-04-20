@@ -14,5 +14,6 @@ def product_list(request, category_slug=None):
     return render(
         request,
         "shop/product/list.html",
+        # "base_products/base1.html",
         {"category": category, "categories": categories, "products": products},
     )
