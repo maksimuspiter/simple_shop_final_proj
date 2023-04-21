@@ -22,3 +22,8 @@ def cart_add(request, product_id):
     # return reverse("shop:product_detail", args=[product.id, product.slug])
     # return HttpResponse('hello world')
     return HttpResponseRedirect(next)
+
+def cart_detail(request):
+    cart = Cart(request)
+    total_price = cart.get_total_price
+    return render(request, 'cart/cart.html', {'total_price': total_price})
