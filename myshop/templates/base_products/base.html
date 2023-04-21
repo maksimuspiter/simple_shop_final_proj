@@ -38,14 +38,22 @@
 
                     </ul>
                     <!-- CART -->
-
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">
+                            {% with total_items=cart|length %}
+                                {% if total_items > 0 %}{{ total_items|pluralize }}
+                                {% elif not order %} 0
+                                {% endif %}
+                            {% endwith %}   
+
+                            </span>
                         </button>
                     </form>
+
+                    
                 </div>
             </div>
         </nav>
