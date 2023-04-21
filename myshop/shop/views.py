@@ -1,20 +1,28 @@
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Count
+from django.db.models import Count, Q
 from .models import Category, Product, ProductImageItem
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 
 
 def product_list(request, category_slug=None):
-    category = None
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+
+    product_ids_in_cart = Cart(request).get_products_ids()
+    category = None
+    search = request.GET.get("q")
+    if search:
+        products = Product.objects.filter(
+            Q(name__icontains=search)
+            | Q(category__name__icontains=search)
+            | Q(description__icontains=search)
+        )
+    else:
+        products = Product.objects.filter(available=True)
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-
-    product_ids_in_cart = Cart(request).get_products_ids()
 
     return render(
         request,
@@ -61,3 +69,10 @@ def product_detail(request, id, slug):
             "form": form,
         },
     )
+
+
+# def search(request):
+#     categories = Category.objects.all()
+#     filter = request.POST.get("filter")
+
+#     products = Product.objects.filter(available=True)
