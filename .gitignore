@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 /privat_info*/
+media/
