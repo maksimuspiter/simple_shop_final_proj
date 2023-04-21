@@ -20,6 +20,10 @@ def product_list(request, category_slug=None):
     else:
         products = Product.objects.filter(available=True)
 
+    ordering = request.GET.get("order_by", "id")
+    if ordering:
+        products = products.order_by(ordering)
+
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
@@ -69,10 +73,3 @@ def product_detail(request, id, slug):
             "form": form,
         },
     )
-
-
-# def search(request):
-#     categories = Category.objects.all()
-#     filter = request.POST.get("filter")
-
-#     products = Product.objects.filter(available=True)

@@ -1,0 +1,37 @@
+<form action="" method="get" id="sortProduct">
+  <div class="d-flex justify-content-start">
+    <div class="box sort pull-right">
+      <span>Сортировка:</span>
+    </div>
+    <div>
+      <button class="btn btn-info" type="submit" name="order_by" value="name">
+        По имени
+      </button>
+      <button class="btn btn-info" type="submit" name="order_by" value="-name">
+        -По имени
+      </button>
+      <button class="btn btn-info" type="submit" name="order_by" value="-price">
+        Сначала дорогие
+      </button>
+      <button class="btn btn-info" type="submit" name="order_by" value="price">
+        Сначала недорогие
+      </button>
+      <button
+        class="btn btn-info"
+        type="submit"
+        name="order_by"
+        value="updated"
+      >
+        Сначала новые
+      </button>
+      <button
+        class="btn btn-info"
+        type="submit"
+        name="order_by"
+        value="-updated"
+      >
+        Сначала старые
+      </button>
+    </div>
+  </div>
+</form>
