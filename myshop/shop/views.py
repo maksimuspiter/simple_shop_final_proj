@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Category, Product
+from django.db.models import Count
+from .models import Category, Product, ProductImageItem
 
 
 def product_list(request, category_slug=None):
@@ -21,10 +22,19 @@ def product_list(request, category_slug=None):
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    product_slider_img = None
+    if product:
+        product_slider_img = ProductImageItem.objects.filter(product=product)
     categories = Category.objects.all()
+
 
     return render(
         request,
         "shop/product/detail.html",
-        {"product": product, "categories": categories},
+        {
+            "product": product,
+            "categories": categories,
+            "product_slider_img": product_slider_img,
+            'product_slider_img_range': range(len(product_slider_img))
+        },
     )
