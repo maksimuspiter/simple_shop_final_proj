@@ -16,17 +16,30 @@
           {{product.description}}
         </p>
         <div class="d-flex">
-          <form action="{% url 'cart:cart_add' product.id %}" method="post">
-            {{ cart_product_form }}
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
 
+
+          <form action="{% url 'cart:cart_add' product.id %}" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            
             <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Add to cart">
-              <i class="bi-cart-fill me-1"></i>
               Add to cart
             </button>
-            <!-- <input type="submit" value="Add to cart"> -->
           </form>
+          {% if in_cart %}
+            <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+              {% csrf_token %}
+
+              <input type="hidden" name="next" value="{{ request.path }}">
+              
+              <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Add to cart">
+                dell
+              </button>
+            </form>
+          {% endif %}
+
+
 
         </div>
       </div>

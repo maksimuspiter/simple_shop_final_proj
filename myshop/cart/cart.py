@@ -60,7 +60,10 @@ class Cart:
         return sum(
             Decimal(item["price"]) * item["quantity"] for item in self.cart.values()
         )
-    
+
     def get_products_ids(self):
         ids = [int(id) for id in self.cart.keys()]
         return ids
+    
+    def get_product_quantity(self, product_id):
+        return self.cart[str(product_id)]["quantity"]

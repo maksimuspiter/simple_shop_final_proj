@@ -14,7 +14,7 @@ def product_list(request, category_slug=None):
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
 
-    product_ids_in_cart = Cart(request).get_products_ids()    
+    product_ids_in_cart = Cart(request).get_products_ids()
 
     return render(
         request,
@@ -29,12 +29,20 @@ def product_list(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
+    cart = Cart(request)
+    form = CartAddProductForm()
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    cart_product_form = CartAddProductForm()
+    categories = Category.objects.all()
     product_slider_img = None
+    in_cart = False
+
     if product:
         product_slider_img = ProductImageItem.objects.filter(product=product)
-    categories = Category.objects.all()
+        if product.id in cart.get_products_ids():
+            in_cart = True
+            form = CartAddProductForm(
+                    initial={"quantity": cart.get_product_quantity(product.id), "override": True}
+                )
 
     return render(
         request,
@@ -43,7 +51,9 @@ def product_detail(request, id, slug):
             "product": product,
             "categories": categories,
             "product_slider_img": product_slider_img,
-            "cart_product_form": cart_product_form,
             "product_slider_img_range": range(len(product_slider_img)),
+            "cart": cart,
+            'in_cart': in_cart,
+            "form": form,
         },
     )
