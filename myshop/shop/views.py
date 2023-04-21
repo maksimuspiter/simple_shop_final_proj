@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 from .models import Category, Product, ProductImageItem
+from cart.cart import Cart
 from cart.forms import CartAddProductForm
 
 
@@ -13,11 +14,17 @@ def product_list(request, category_slug=None):
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
 
+    product_ids_in_cart = Cart(request).get_products_ids()    
+
     return render(
         request,
         "shop/product/list.html",
-        # "base_products/base1.html",
-        {"category": category, "categories": categories, "products": products},
+        {
+            "category": category,
+            "categories": categories,
+            "products": products,
+            "product_ids_in_cart": product_ids_in_cart,
+        },
     )
 
 
