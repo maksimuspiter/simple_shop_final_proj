@@ -33,8 +33,11 @@
         <div class="p-2">
             <div class="card-footer border-top-0 bg-transparent text-center">
                 <div>
+                {% if product.pk in product_ids_in_cart %}
+                    <a class="btn btn-success mt-auto" href="{{product.get_absolute_url}}">Уже в карзине</a>
+                {% else %}
                     <a class="btn btn-primary mt-auto" href="{{product.get_absolute_url}}">Подробнее</a>
-
+                {% endif %}
                 </div>
             </div>
         </div>

@@ -43,12 +43,7 @@
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">
-                            {% with total_items=cart|length %}
-                                {% if total_items > 0 %}{{ total_items }}
-                                {% elif not order %} 0
-                                {% endif %}
-                            {% endwith %}   
-
+                                {{cart|length}}
                             </span>
                         </button>
                     </form>
