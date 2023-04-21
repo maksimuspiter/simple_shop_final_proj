@@ -1,0 +1,17 @@
+{% extends 'base_products/base.html' %} 
+{% load static %}
+
+{% block title %}
+    {{product.category.name}}: {{product.name}}
+{% endblock %}
+
+{% block categories %}
+    {% include "shop/product/nav_bar_categories.html" %}
+{% endblock categories %}
+
+
+{% block content %}
+
+    {% include "shop/product/product_card_single.html" %}
+
+{% endblock %}
