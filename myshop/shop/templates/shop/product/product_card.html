@@ -1,0 +1,42 @@
+<div class="col mb-5">
+    <div class="card h-100 d-flex align-items flex-column">
+
+        <div class="mb-auto p-2">
+            <!-- Sale badge-->
+            <div class="badge bg-dark text-white" style="top: 0.5rem; right: 0.5rem">Sale</div>
+            <!-- Product image-->
+            <a href="{{product.get_absolute_url}}">
+            <img class="card-img-top" src="{{product.image.url}}" alt="{{product.name}}">
+            </a>
+        </div>
+
+        <!-- Product details-->
+        <div class="p-2">
+            <div class="text-center">
+                <!-- Product name-->
+                <h5 class="fw-bolder">{{product.name}}</h5>
+                <!-- Product reviews-->
+                <div class="d-flex justify-content-center small text-warning mb-2">
+                    <div class="bi-star-fill"></div>
+                    <div class="bi-star-fill"></div>
+                    <div class="bi-star-fill"></div>
+                    <div class="bi-star-fill"></div>
+                    <div class="bi-star-fill"></div>
+                </div>
+                <!-- Product price-->
+                <span class="text-muted text-decoration-line-through"> {{product.price_old}} ₽</span>
+                {{product.price}} ₽
+            </div>
+        </div>
+
+        <!-- Product actions-->
+        <div class="p-2">
+            <div class="card-footer border-top-0 bg-transparent text-center">
+                <div>
+                    <a class="btn btn-primary mt-auto" href="{{product.get_absolute_url}}">Подробнее</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
