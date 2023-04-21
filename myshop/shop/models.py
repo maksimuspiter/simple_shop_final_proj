@@ -33,8 +33,8 @@ class Product(models.Model):
     image_slider = models.ManyToManyField("ProductImageItem", blank=True)
 
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    price_old = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, help_text='Цена в данный момент')
+    price_old = models.DecimalField(max_digits=10, decimal_places=2, help_text='Цена до изменения')
     available = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)
