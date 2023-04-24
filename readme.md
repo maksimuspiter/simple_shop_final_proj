@@ -15,3 +15,15 @@ Product List with category and filters,
 <p>python3 -m venv venv </p>
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
+
+#TODO:
+<ul>
+  <li>Add tags</li>
+  <li>Add coupons</li>
+  <li>Add profile page</li>
+  <li>Add Task, celery, send email</li>
+
+  <li>Change database --> PostgreSQL</li>
+  <li>Add Django REST framework</li>
+  <li></li>
+</ul>
