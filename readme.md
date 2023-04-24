@@ -3,8 +3,9 @@
 
 ### Project: 
 Product List with category and filters, 
-Cart (CART_SESSION_ID)
-Order form without payment
+<li>Cart (CART_SESSION_ID)</li>
+<li>Order form without payment
+<li>Database == sqlite
 
 #### Start:
 python3 -m venv venv 
