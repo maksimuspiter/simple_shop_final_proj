@@ -73,17 +73,17 @@
                     <hr>
                     <div class="row">
                         <!--Count_item -->
-                        <div class="col" style="padding-left:0;">ITEMS 3</div>
+                        <div class="col" style="padding-left:0;">ITEMS {{cart|length}}</div>
                         <!--Total_price -->
                         <div class="col text-right">{{ cart.get_total_price }}</div>
                     </div>
                     <form>
-                        <p>SHIPPING</p>
+                        <p class="text-danger">SHIPPIN Поле не готово</p>
                         <!--Shipping options -->
                         <select><option class="text-muted">Standard-Delivery- €5.00</option></select>
                         <!--Promocode -->
 
-                        <p>GIVE CODE</p>
+                        <p class="text-danger">GIVE CODE Поле не готово</p>
                         <input id="code" placeholder="Enter your code">
                     </form>
                     <!--Total_price -->
