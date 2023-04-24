@@ -12,6 +12,6 @@ Product List with category and filters,
 </ul>
 
 <h4>Start:</h4>
-python3 -m venv venv 
-source venv/bin/activate
-pip install -r requirements.txt
+<p>python3 -m venv venv </p>
+<p>source venv/bin/activate</p>
+<p>pip install -r requirements.txt</p>
