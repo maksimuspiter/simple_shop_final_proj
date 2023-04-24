@@ -5,6 +5,7 @@
 
 <ul>
   <li>Product List with category and filters</li>
+  <li>Product card (add and remove forms)</li>
   <li>Cart (CART_SESSION_ID)</li>
   <li>Order form without payment</li>
   <li>Database == sqlite</li>
