@@ -16,11 +16,15 @@ Product List with category and filters,
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
 
-#TODO:
+#TODO for new branch:
 <ul>
   <li>Add tags</li>
   <li>Add coupons</li>
   <li>Add profile page</li>
+  <li>Add product review and comment</li>
+  <li>Add product star system</li>
+
+
   <li>Add Task, celery, send email</li>
 
   <li>Change database --> PostgreSQL</li>
