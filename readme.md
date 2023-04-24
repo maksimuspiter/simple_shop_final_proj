@@ -3,9 +3,8 @@
 
 <h3>Project:</h3>
 
-Product List with category and filters, 
-
 <ul>
+  <li>Product List with category and filters</li>
   <li>Cart (CART_SESSION_ID)</li>
   <li>Order form without payment</li>
   <li>Database == sqlite</li>
