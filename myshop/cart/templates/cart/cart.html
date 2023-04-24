@@ -60,10 +60,6 @@
 </div>
 {% endfor %}
 <!-- END Product_item -->
-
-
-
-<div class="back-to-shop"><a href="{% url 'shop:product_list' %}">←<span class="text-muted">Back to shop</span></a></div>
 {% endblock %}
 
 {% block right_side %}
@@ -91,12 +87,12 @@
     <div class="col text-right">{{ cart.get_total_price }}</div>
 </div>
 
-<form action="#" method="post">
+    <a href="{% url 'orders:order_create' %}">
+        <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Create order">
+            <i class="bi-cart-fill me-1"></i>
+            Оформить
+        </button>
+    </a>
 
-    {% csrf_token %}
-    <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Create order">
-      <i class="bi-cart-fill me-1"></i>
-      Оформить
-    </button>
-  </form>
+
 {% endblock %}
