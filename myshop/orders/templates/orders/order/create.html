@@ -32,11 +32,11 @@
 {% endblock %} 
 
 {% block right_side %}
-<div><h5><b>Summary</b></h5></div>
+<div><h5><b>Итог</b></h5></div>
 <hr>
 <div class="row">
     <!--Count_item -->
-    <div class="col" style="padding-left:0;">ITEMS {{cart|length}}</div>
+    <div class="col" style="padding-left:0;">Товаров: {{cart|length}}</div>
     <!--Total_price -->
     <div class="col text-right">{{ cart.get_total_price }}</div>
 </div>
