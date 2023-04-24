@@ -1,0 +1,40 @@
+{% extends 'base_cart/base_cart.html' %} 
+{% block title %} Checkout {% endblock%} 
+
+{% block left_side %}
+
+<!-- <h1>Checkout</h1>
+<div>
+  <h3>Your order</h3>
+  <ul>
+    {% for item in cart %}
+      <li>
+        {{ item.quantity }}x {{ item.product.name }}
+        <span>${{ item.total_price|floatformat:2 }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+  <p>Total: ${{ cart.get_total_price|floatformat:2 }}</p>
+</div> -->
+<form action="" method="post">
+  {% csrf_token %} {% for field in form %}
+  <div class="form-group">
+    {{ field.errors }} {{ field.label_tag }} {{ field }}
+  </div>
+  {% endfor %}
+
+  <input type="submit" value="Submit" />
+</form>
+
+{% endblock %} 
+
+{% block right_side %}
+<div><h5><b>Summary</b></h5></div>
+<hr>
+<div class="row">
+    <!--Count_item -->
+    <div class="col" style="padding-left:0;">ITEMS {{cart|length}}</div>
+    <!--Total_price -->
+    <div class="col text-right">{{ cart.get_total_price }}</div>
+</div>
+{% endblock %}
