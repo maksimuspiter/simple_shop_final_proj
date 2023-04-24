@@ -161,3 +161,4 @@ cython_debug/
 
 /privat_info*/
 media/
+.vscode/
