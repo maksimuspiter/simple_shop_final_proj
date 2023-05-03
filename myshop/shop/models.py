@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -23,6 +24,14 @@ class Category(models.Model):
         return reverse("shop:product_list_by_category", args=[self.slug])
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     category = models.ForeignKey(
         Category, related_name="products", on_delete=models.CASCADE
@@ -33,12 +42,17 @@ class Product(models.Model):
     image_slider = models.ManyToManyField("ProductImageItem", blank=True)
 
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, help_text='Цена в данный момент')
-    price_old = models.DecimalField(max_digits=10, decimal_places=2, help_text='Цена до изменения')
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, help_text="Цена в данный момент"
+    )
+    price_old = models.DecimalField(
+        max_digits=10, decimal_places=2, help_text="Цена до изменения"
+    )
     available = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(Tag, related_name="product")
 
     class Meta:
         ordering = ["name"]
@@ -65,3 +79,55 @@ class ProductImageItem(models.Model):
     class Meta:
         verbose_name = "Фото продуктов на слайдер"
         verbose_name_plural = "Фотографии продуктов на слайдер"
+
+
+class Account(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    birthday = models.DateTimeField(null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=[("M", "Mail"), ("F", "Fimale")])
+    favorite_products = models.ManyToManyField(Product, related_name="account", blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
+
+    class Meta:
+        ordering = ["created"]
+        indexes = [
+            models.Index(fields=["created"]),
+        ]
+        verbose_name = "Аккаунт"
+        verbose_name_plural = "Аккаунты"
+
+    def __str__(self):
+        return f"{self.user.id}: {self.user.last_name} {self.user.first_name}"
+
+
+class Comment(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name="Продукт",
+    )
+    author = models.ForeignKey(
+        Account,
+        on_delete=models.CASCADE,
+        related_name="blog_comments",
+        verbose_name="Автор комментария",
+    )
+    body = models.TextField(verbose_name="Контент")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
+    active = models.BooleanField(default=True, verbose_name="Активный")
+
+    class Meta:
+        ordering = ["created"]
+        indexes = [
+            models.Index(fields=["created"]),
+        ]
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    # def __str__(self):
+    #     return 

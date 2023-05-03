@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, ProductImageItem
+from .models import Category, Product, ProductImageItem, Account, Comment
 
 
 @admin.register(Category)
@@ -20,3 +20,13 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductImageItemAdmin(admin.ModelAdmin):
     list_display = ["name", "slug"]
     prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ["user", "birthday", "gender", "created", "updated"]
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ["product", "author", "body", "created", "updated", "active"]
