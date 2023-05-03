@@ -10,8 +10,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "slug", "price", "available", "created", "updated"]
-    list_filter = ["available", "created", "updated"]
+    list_display = ["name", "slug", "price", "available", "created", "updated", "rating"]
+    list_filter = ["available", "created", "updated", "rating"]
     list_editable = ["price", "available"]
     prepopulated_fields = {"slug": ("name",)}
 
@@ -29,4 +29,4 @@ class AccountAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["product", "author", "body", "created", "updated", "active"]
+    list_display = ["product", "customer", "body", "created", "updated", "active"]

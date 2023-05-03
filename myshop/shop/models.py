@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Category(models.Model):
@@ -54,6 +55,8 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="product")
 
+    rating = models.IntegerField(verbose_name="Рейтинг", default=0)
+
     class Meta:
         ordering = ["name"]
         indexes = [
@@ -87,7 +90,9 @@ class Account(models.Model):
     )
     birthday = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=[("M", "Mail"), ("F", "Fimale")])
-    favorite_products = models.ManyToManyField(Product, related_name="account", blank=True)
+    favorite_products = models.ManyToManyField(
+        Product, related_name="account", blank=True
+    )
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
 
@@ -110,24 +115,31 @@ class Comment(models.Model):
         related_name="comments",
         verbose_name="Продукт",
     )
-    author = models.ForeignKey(
+    customer = models.ForeignKey(
         Account,
         on_delete=models.CASCADE,
         related_name="blog_comments",
         verbose_name="Автор комментария",
     )
-    body = models.TextField(verbose_name="Контент")
+    body = models.TextField(verbose_name="Контент", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
     active = models.BooleanField(default=True, verbose_name="Активный")
+    
+    product_score = models.IntegerField(
+        verbose_name="Оценка продукта",
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        default=5,
+    )
 
     class Meta:
         ordering = ["created"]
         indexes = [
             models.Index(fields=["created"]),
         ]
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = "Отзыв о товаре"
+        verbose_name_plural = "Отзывы о товаре"
 
     # def __str__(self):
-    #     return 
+    #     return
+
