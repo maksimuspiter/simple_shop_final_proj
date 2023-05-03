@@ -15,40 +15,8 @@
         <p class="lead">
           {{product.description}}
         </p>
-        <div class="d-flex">
+        {% include "shop/product/include/button_in_cart.html" %}
 
-
-              <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                {% csrf_token %}
-                {{form}}
-                <input type="hidden" name="next" value="{{ request.path }}">
-
-                {% if in_cart %}
-                <button class="btn btn-info" type="submit">
-                  Change
-                </button>
-                {% else %}
-                <button class="btn btn-success" type="submit">
-                  Add to cart
-                </button>
-                {% endif %}
-
-              </form>
-              {% if in_cart %}
-              <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-                {% csrf_token %}
-
-                <input type="hidden" name="next" value="{{ request.path }}">
-                
-                <button class="btn btn-warning" type="submit" value="Dell">
-                  dell
-                </button>
-              </form>
-            {% endif %}
-
-
-
-        </div>
       </div>
     </div>
   </div>

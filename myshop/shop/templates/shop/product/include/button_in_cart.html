@@ -1,29 +1,39 @@
 {% load static %}
 
-<div>
-  {% if product.pk in product_ids_in_cart %}
+<div class="d-flex">
 
-  <div class="d-flex justify-content-center">
-    <a href="{% url 'cart:cart_detail' %}">
-      <button class="btn btn-success" type="submit" value="Add to cart">
-        <i class="bi bi-cart"></i>
-      </button>
-    </a>
-    <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="next" value="{{ request.path }}" />
 
-      <button class="btn btn-danger" type="submit" value="Add to cart">
-        X
-      </button>
-    </form>
-  </div>
-  {% else %}
-  <a href="{{product.get_absolute_url}}">
-    <button class="btn btn-info" type="submit" value="Add to cart">
-      Подробнее
+  <form action="{% url 'cart:cart_add' product.id %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="hidden" name="next" value="{{ request.path }}">
+
+    {% if in_cart %}
+    <button class="btn btn-info" type="submit">
+      Change
     </button>
-  </a>
+    {% else %}
+    <button class="btn btn-success" type="submit">
+      Add to cart
+    </button>
+    {% endif %}
 
-  {% endif %}
+  </form>
+  {% if in_cart %}
+  <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+    {% csrf_token %}
+
+    <input type="hidden" name="next" value="{{ request.path }}">
+    
+    <button class="btn btn-warning" type="submit" value="Dell">
+      dell
+    </button>
+  </form>
+{% endif %}
+
+
+
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'base_products/js/to_cart.js' %}"></script>
