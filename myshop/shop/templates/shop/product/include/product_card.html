@@ -32,33 +32,8 @@
         <!-- Product actions-->
         <div class="p-2">
             <div class="card-footer border-top-0 bg-transparent text-center">
-                <div>
-                {% if product.pk in product_ids_in_cart %}
-                <div class="d-flex justify-content-center">
-                    <a href="{% url 'cart:cart_detail' %}">
-                        <button class="btn btn-success" type="submit" value="Add to cart">
-                            <i class="bi bi-cart"></i>
+                {% include "shop/product/include/button_in_cart.html" %}
 
-                        </button>
-                    </a>
-                    <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="next" value="{{ request.path }}">
-                        
-                        <button class="btn btn-danger" type="submit" value="Add to cart">
-                          X
-                        </button>
-                      </form>
-                </div>
-                {% else %}
-                <a href="{{product.get_absolute_url}}">
-                    <button class="btn btn-info" type="submit" value="Add to cart">
-                    Подробнее
-                    </button>
-                </a>
-
-                {% endif %}
-                </div>
             </div>
         </div>
     </div>
