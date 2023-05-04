@@ -1,0 +1,13 @@
+{% load my_filters %}
+<div class="d-flex justify-content-center small text-warning">
+    {% for i in 5|times %}
+        {% if i < rating|get_integer_part_of_number %}
+            <div class="bi-star-fill"></div>
+        {% elif i == rating|get_integer_part_of_number and rating|ckek_half_star %}
+            <div class="bi-star-half"></div>
+        {% else %}
+            <div class="bi-star"></div>
+        {% endif %}
+    {% endfor %}
+    <span>{{rating|floatformat:1}}</span>
+</div>

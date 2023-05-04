@@ -1,4 +1,3 @@
-{% load my_filters %}
 <section>
     <div class="container">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -10,19 +9,10 @@
                     </a>
                     </div>
                     <!-- Product reviews-->
-
-                    <div class="d-flex justify-content-center small text-warning">
-                        {% for i in 5|times %}
-                            {% if i < product.rating|get_integer_part_of_number %}
-                                <div class="bi-star-fill"></div>
-                            {% elif i == product.rating|get_integer_part_of_number and product.rating|ckek_half_star %}
-                                <div class="bi-star-half"></div>
-                            {% else %}
-                                <div class="bi-star"></div>
-                            {% endif %}
-                        {% endfor %}
-                        <span>{{product.rating|floatformat:1}}</span>
-                    </div>
+                    {% with rating=product.rating %}
+                        {% include "shop/product/include/product_stars.html" %}
+                    {% endwith %}
+                    <span>{{product.rating|floatformat:1}}</span>
 
                     <!-- Product price-->
                     <span >{{product.price}} ₽</span>
