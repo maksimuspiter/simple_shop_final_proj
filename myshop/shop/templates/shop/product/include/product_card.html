@@ -26,6 +26,9 @@
                 <!-- Product price-->
                 <span class="text-muted text-decoration-line-through"> {{product.price_old}} ₽</span>
                 {{product.price}} ₽
+
+                {% include "shop/product/include/product_tags.html" %}
+
             </div>
         </div>
 
