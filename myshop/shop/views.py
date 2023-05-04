@@ -2,7 +2,7 @@ from typing import Any
 from django.db import models
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count, Q
-from .models import Category, Product, ProductImageItem
+from .models import Category, Product, ProductImageItem, Tag
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
@@ -17,12 +17,7 @@ class AllProductListView(ListView):
 
         search = self.request.GET.get("q", None)
         ordering = self.request.GET.get("order_by", "id")
-        # category_slug = self.request.GET.get("category_slug",  None)
-        category_slug = self.kwargs.get("category_slug", None)
 
-        if category_slug:
-            category = get_object_or_404(Category, slug=category_slug)
-            queriset = queriset.filter(category=category)
         if search:
             queriset = Product.objects.filter(
                 Q(name__icontains=search)
@@ -44,6 +39,37 @@ class AllProductListView(ListView):
         return context
 
 
+class ProductsByCategory(AllProductListView):
+    def get_queryset(self, **kwargs):
+        queriset = super().get_queryset()
+
+        category_slug = self.kwargs.get("category_slug", None)
+
+        if category_slug:
+            queriset = (
+                queriset.filter(category__slug=category_slug)
+                .select_related("category")
+                .prefetch_related("tags")
+            )
+        return queriset
+
+
+class ProductsByTag(AllProductListView):
+    def get_queryset(self, **kwargs):
+        queriset = super().get_queryset()
+
+        tag_slug = self.kwargs.get("tag_slug", None)
+
+        if tag_slug:
+            # tag = get_object_or_404(Tag, slug=tag_slug)
+            queriset = (
+                queriset.filter(tags__slug=tag_slug)
+                .select_related("category")
+                .prefetch_related("tags")
+            )
+        return queriset
+
+
 def product_detail(request, id, slug):
     cart = Cart(request)
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
@@ -51,8 +77,6 @@ def product_detail(request, id, slug):
 
     product_slider_img = ProductImageItem.objects.filter(product=product)
     products_in_cart_quantity = cart.get_product_quantity(product.id)
-
-
 
     return render(
         request,
