@@ -14,9 +14,27 @@ function getCookie(name) {
   return cookieValue;
 }
 
-function add_to_cart(user, product_id) {
-  console.log(user);
-  console.log(product_id);
+function change_quantity_cart(url, action, product_id) {
+  $.ajax({
+    url: url,
+    type: "POST",
+    data: jQuery.param({ action: action }),
+    dataType: "json",
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    success: (data) => {
+      if (data.result) {
+        let products_quantity_new = document.getElementById(
+          "product-in-cart-quantity-" + product_id
+        );
+        products_quantity_new.innerHTML = data.final_quantity_in_cart;
+      }
+    },
+
+    error: (error) => {
+      console.log(error);
+    },
+  });
 }
-
-

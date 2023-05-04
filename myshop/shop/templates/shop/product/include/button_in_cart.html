@@ -2,38 +2,23 @@
 
 <div class="d-flex">
 
-
-  <form action="{% url 'cart:cart_add' product.id %}" method="post">
-    {% csrf_token %}
-    {{form}}
-    <input type="hidden" name="next" value="{{ request.path }}">
-
-    {% if in_cart %}
-    <button class="btn btn-info" type="submit">
-      Change
-    </button>
-    {% else %}
-    <button class="btn btn-success" type="submit">
-      Add to cart
-    </button>
-    {% endif %}
-
-  </form>
-  {% if in_cart %}
-  <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-    {% csrf_token %}
-
-    <input type="hidden" name="next" value="{{ request.path }}">
-    
-    <button class="btn btn-warning" type="submit" value="Dell">
-      dell
-    </button>
-  </form>
-{% endif %}
-
-
-
+  <button onclick="remove_in_cart('{{product.id}}')">-</button>
+  <i class="bi bi-cart"></i>
+  <span id="product-in-cart-quantity-{{product.id}}">{{products_in_cart_quantity}}</span>
+  <button onclick="add_in_cart('{{product.id}}')">+</button>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="{% static 'base_products/js/to_cart.js' %}"></script>
+
+<script>
+  const url = "{% url 'cart:cart-ajax' product.id %}";
+
+  function add_in_cart(product_id) {
+    change_quantity_cart(url, 'add', product_id);
+  }
+  function remove_in_cart(product_id) {
+    change_quantity_cart(url, 'remove', product_id);
+  }
+</script>
