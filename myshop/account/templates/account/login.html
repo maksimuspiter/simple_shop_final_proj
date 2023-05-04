@@ -1,0 +1,47 @@
+{% extends 'base_products/base_products.html' %} 
+
+{% block title %}
+    LogIn
+{% endblock %}
+
+
+{% block content %}
+<h1>Log-in</h1>
+<p>Если у вас еще нет аккаунта: <a href="#">регистрация</a></p>
+
+<div class="form-outline mb-4">
+
+    <form action="{% url 'account:my_account-login' %}" method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {% for field in form.visible_fields %}
+        
+            {% if field.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ field.errors }}
+                </div>
+                <div class="alert alert-primary" role="alert">
+                    {{ field.help_text }}    
+                </div>
+            {% endif %}
+              
+            <div class="form-group p-1">    
+            
+                <label >{{ field.label_tag }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Войти</button>
+
+    </form>
+
+  </div>
+  {% endblock %}
