@@ -27,7 +27,7 @@ class AllProductListView(ListView):
         if ordering:
             queriset = queriset.order_by(ordering)
 
-        return queriset
+        return queriset.prefetch_related('tags').select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,8 +48,6 @@ class ProductsByCategory(AllProductListView):
         if category_slug:
             queriset = (
                 queriset.filter(category__slug=category_slug)
-                .select_related("category")
-                .prefetch_related("tags")
             )
         return queriset
 
@@ -64,8 +62,6 @@ class ProductsByTag(AllProductListView):
             # tag = get_object_or_404(Tag, slug=tag_slug)
             queriset = (
                 queriset.filter(tags__slug=tag_slug)
-                .select_related("category")
-                .prefetch_related("tags")
             )
         return queriset
 
