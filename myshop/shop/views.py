@@ -48,21 +48,11 @@ def product_detail(request, id, slug):
     cart = Cart(request)
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     categories = Category.objects.all()
-    product_slider_img = None
-    in_cart = False
 
-    if product:
-        product_slider_img = ProductImageItem.objects.filter(product=product)
-        if product.id in cart.get_products_ids():
-            in_cart = True
-            form = CartAddProductForm(
-                initial={
-                    "quantity": cart.get_product_quantity(product.id),
-                    "override": True,
-                }
-            )
-        else:
-            form = CartAddProductForm()
+    product_slider_img = ProductImageItem.objects.filter(product=product)
+    products_in_cart_quantity = cart.get_product_quantity(product.id)
+
+
 
     return render(
         request,
@@ -73,7 +63,6 @@ def product_detail(request, id, slug):
             "product_slider_img": product_slider_img,
             "product_slider_img_range": range(len(product_slider_img)),
             "cart": cart,
-            "in_cart": in_cart,
-            "form": form,
+            "products_in_cart_quantity": products_in_cart_quantity,
         },
     )
