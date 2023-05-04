@@ -4,16 +4,16 @@ from .models import Account
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def my_account(request):
-    if request.user.is_authenticated:
-        account = get_object_or_404(Account, user=request.user)
-        orders = account.orders.all()
-        return render(
-            request, "account/my_account.html", {"account": account, "orders": orders}
-        )
-    return redirect("shop:product_list")
+    account = get_object_or_404(Account, user=request.user)
+    orders = account.orders.all()
+    return render(
+        request, "account/my_account.html", {"account": account, "orders": orders}
+    )
 
 
 def user_login(request):
