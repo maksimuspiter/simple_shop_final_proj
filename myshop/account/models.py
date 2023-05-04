@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from shop.models import Product, Cupon
 
 
 class Account(models.Model):
@@ -11,10 +12,10 @@ class Account(models.Model):
     )
     birthday = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=[("M", "Mail"), ("F", "Fimale")])
-    # from shop.models import Product
-    # favorite_products = models.ManyToManyField(
-    #     Product, related_name="account", blank=True
-    # )
+    favorite_products = models.ManyToManyField(
+        Product, related_name="account", verbose_name="Избранные продукты"
+    )
+    cupons = models.ManyToManyField(Cupon, verbose_name="Доступные купоны")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
 
