@@ -64,6 +64,8 @@ class Cart:
     def get_products_ids(self):
         ids = [int(id) for id in self.cart.keys()]
         return ids
-    
+
     def get_product_quantity(self, product_id):
-        return self.cart[str(product_id)]["quantity"]
+        if self.cart.get(str(product_id), None):
+            return self.cart[str(product_id)]["quantity"]
+        return 0
