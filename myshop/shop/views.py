@@ -96,3 +96,7 @@ def product_detail(request, id, slug):
             "product_comments": product_comments,
         },
     )
+
+
+def my_account(request):
+    return render(request, "shop/account/my_account.html")
