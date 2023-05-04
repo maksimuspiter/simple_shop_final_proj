@@ -15,5 +15,4 @@ urlpatterns = [
         name="product_list_by_tag",
     ),
     path("<int:id>/<slug:slug>/", views.product_detail, name="product_detail"),
-    path("my_account/main/", views.my_account, name="my_account"),
 ]
