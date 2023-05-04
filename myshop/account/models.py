@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 
 class Account(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="account",
     )
     birthday = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=[("M", "Mail"), ("F", "Fimale")])

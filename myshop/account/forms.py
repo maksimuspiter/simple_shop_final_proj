@@ -12,8 +12,6 @@ class LoginForm(forms.Form):
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label="Пароль", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Повторите пароль", widget=forms.PasswordInput)
-
-    # birthday = forms.DateField(label="День рождения", widget=forms.SelectDateWidget())
     gender = forms.ChoiceField(
         label="Пол", widget=forms.Select(), choices=[("M", "Mail"), ("F", "Fimale")]
     )
@@ -54,3 +52,10 @@ class UserEditForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("Email already in use.")
         return data
+
+
+class AccountEditForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ["birthday", "gender"]
+        widgets = {"birthday": forms.SelectDateWidget(years=range(1980, 2014))}
