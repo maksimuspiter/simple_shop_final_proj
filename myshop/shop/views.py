@@ -79,6 +79,7 @@ def product_detail(request, id, slug):
     products_in_cart_quantity = cart.get_product_quantity(product.id)
 
     # related_products = Product.objects.filter(available=True, category=product.category)
+    product_comments = product.comments.all()[:10]
     related_products = Product.objects.all().order_by("category")
 
     return render(
@@ -92,5 +93,6 @@ def product_detail(request, id, slug):
             "cart": cart,
             "products_in_cart_quantity": products_in_cart_quantity,
             "related_products": related_products,
+            "product_comments": product_comments,
         },
     )

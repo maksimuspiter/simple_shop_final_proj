@@ -1,0 +1,27 @@
+{% for comment in product_comments%}
+<div class="container border bg-light">
+
+    <div class="row">
+
+        <div  class="col-8">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).webp"
+            alt="avatar" 
+            width="25"
+            height="25">
+            <span class="small mb-0 ms-2">{{comment.customer.user}}</span>
+        </div>
+        <div class="col">
+            <span class="small mb-0 ms-2">{{comment.updated|date:"d M Y"}}</span>
+        </div>
+        <div class="col">
+            {% with rating=comment.product_score %}
+                {% include "shop/product/include/product_stars.html" %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="px-2">
+        <p>{{comment.body}}</p>
+    </div>
+</div>
+
+{% endfor %}
