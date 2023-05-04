@@ -160,6 +160,6 @@ cython_debug/
 #.idea/
 
 /privat_info*/
-media/
-.vscode/
 /media/
+.vscode/
+media/

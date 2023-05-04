@@ -22,7 +22,7 @@
 #TODO in future:
 <ul>
   <li>Add coupons</li>
-  <li>Add profile page</li>
+  <li>Refactor profile page</li>
   <li>Add file to coomments </li>
 
   <li>Add Task, celery, send email</li>
