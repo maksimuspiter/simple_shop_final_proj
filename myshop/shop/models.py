@@ -32,6 +32,9 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("shop:product_list_by_tag", args=[self.slug])
+
 
 class Product(models.Model):
     category = models.ForeignKey(
@@ -125,7 +128,6 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
     active = models.BooleanField(default=True, verbose_name="Активный")
-    
     product_score = models.IntegerField(
         verbose_name="Оценка продукта",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
@@ -139,7 +141,3 @@ class Comment(models.Model):
         ]
         verbose_name = "Отзыв о товаре"
         verbose_name_plural = "Отзывы о товаре"
-
-    # def __str__(self):
-    #     return
-
