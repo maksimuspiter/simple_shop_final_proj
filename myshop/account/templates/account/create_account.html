@@ -1,0 +1,19 @@
+{% extends 'base_products/base_products.html' %} 
+
+{% block title %}
+    Create account
+{% endblock %}
+
+
+{% block content %}
+    <h1>Create account</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_div}}
+
+        <button type="submit" class="btn btn-primary">Save</button>
+
+    </form>
+
+  {% endblock %}
