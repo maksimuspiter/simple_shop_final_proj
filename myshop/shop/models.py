@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-from account.models import Account
 
 
 class Category(models.Model):
@@ -105,9 +104,9 @@ class Comment(models.Model):
         verbose_name="Продукт",
     )
     customer = models.ForeignKey(
-        Account,
+        User,
         on_delete=models.CASCADE,
-        related_name="blog_comments",
+        related_name="comments",
         verbose_name="Автор комментария",
     )
     body = models.TextField(verbose_name="Контент", null=True, blank=True)
@@ -127,3 +126,28 @@ class Comment(models.Model):
         ]
         verbose_name = "Отзыв о товаре"
         verbose_name_plural = "Отзывы о товаре"
+
+
+class Cupon(models.Model):
+    code = models.CharField(max_length=50, help_text="Код Купона", unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    valid_from = models.DateTimeField(
+        blank=True, null=True, help_text="Действителен с этой даты"
+    )
+    valid_until = models.DateTimeField(
+        blank=True, null=True, help_text="Действителен до этой даты"
+    )
+    discount = models.IntegerField(
+        verbose_name="Процент скидки",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Купон"
+        verbose_name_plural = "Купоны"
+
+    def __str__(self):
+        return self.code

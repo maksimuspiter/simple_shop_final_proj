@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, ProductImageItem, Comment, Tag
+from .models import Category, Product, ProductImageItem, Comment, Tag, Cupon
 
 
 @admin.register(Category)
@@ -40,3 +40,10 @@ class ProductImageItemAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["product", "customer", "body", "created", "updated", "active"]
+
+
+@admin.register(Cupon)
+class CuponAdmin(admin.ModelAdmin):
+    list_display = ["code", "valid_from", "valid_until", "discount", "active"]
+    search_fields = ["code", "discount", "active"]
+    list_filter = ["active"]
