@@ -10,6 +10,7 @@
   <li>Order form without payment</li>
   <li>Database == sqlite</li>
   <li>Related products in product_detail</li>
+  <li>Add product star system and customer feedback </li>
 
 </ul>
 
@@ -18,13 +19,11 @@
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
 
-#TODO for new branch:
+#TODO in future:
 <ul>
   <li>Add coupons</li>
   <li>Add profile page</li>
-  <li>Add product review and comment</li>
-  <li>Add product star system</li>
-
+  <li>Add file to coomments </li>
 
   <li>Add Task, celery, send email</li>
 
