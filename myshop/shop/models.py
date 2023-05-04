@@ -57,8 +57,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="product")
-
-    rating = models.IntegerField(verbose_name="Рейтинг", default=0)
+    rating = models.FloatField(verbose_name="Рейтинг", default=0)
 
     class Meta:
         ordering = ["name"]
