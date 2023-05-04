@@ -2,12 +2,21 @@
 {% load static %}
 
 {% block title %}
-    ичный кабинет
+    Личный кабинет
 {% endblock %}
 
 
 
 
 {% block content %}
-    <h1>Hello {{request.user}}</h1>
+    <h1>Hello {{account.user}}</h1>
+
+{% if orders%}
+    <h2>Заказы</h2>
+    {% for order in orders %}    
+        {{order.created}}
+    {% endfor %}
+{% else %}
+    <h2>Вы еще ничего не покупали =(</h2>
+{% endif %}
 {% endblock %}
