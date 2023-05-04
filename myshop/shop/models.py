@@ -10,10 +10,10 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["slug"]
         indexes = [
             models.Index(
-                fields=["name"],
+                fields=["slug"],
             )
         ]
         verbose_name = "Категория"
@@ -28,7 +28,17 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ["slug"]
+        indexes = [
+            models.Index(
+                fields=["slug"],
+            )
+        ]
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
 
     def __str__(self):
         return self.name
