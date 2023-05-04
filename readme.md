@@ -6,11 +6,11 @@
 <ul>
   <li>Product List with category, tags and filters</li>
   <li>Product card (CART_SESSION_ID)</li>
-  <li>add and remove products with ajax</li>
+  <li>add and remove products in cart with ajax</li>
   <li>Order form without payment</li>
   <li>Database == sqlite</li>
   <li>Related products in product_detail</li>
-  <li>Add product star system and customer feedback </li>
+  <li>Product star system and customer feedback </li>
 
 </ul>
 
@@ -21,8 +21,9 @@
 
 #TODO in future:
 <ul>
-  <li>Add coupons</li>
+  <li>Add coupons in Orders and Account</li>
   <li>Refactor profile page</li>
+  <li>Add favorite products in account and cart (before order) </li>
   <li>Add file to coomments </li>
 
   <li>Add Task, celery, send email</li>
