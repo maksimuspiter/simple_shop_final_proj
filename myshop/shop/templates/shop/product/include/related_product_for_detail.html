@@ -1,14 +1,31 @@
-<!-- Related items section-->
 
-<section class="py-5 bg-light">
-    <div class="container px-4 px-lg-5 mt-5">
-      <h2 class="fw-bolder mb-4">Related products new</h2>
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <!--                Input related products
-              include "shop/product/product_card.html"
-              -->
-      </div>
+<section>
+    <div class="container">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in related_products %}
+                <div class="b-auto p-2 text-center">
+                    <div>
+                    <a href="{{product.get_absolute_url}}">
+                        <img src="{{product.image_title.url}}" alt="{{product.name}}" height="150">
+                    </a>
+                    </div>
+                    <!-- Product reviews-->
+
+                    <div class="d-flex justify-content-center small text-warning">
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                    </div>
+
+                    <!-- Product price-->
+                    <span >{{product.price}} ₽</span>
+
+                </div>
+            {% endfor %}
+        </div>
+
     </div>
   </section>
+

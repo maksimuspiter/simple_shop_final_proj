@@ -4,11 +4,13 @@
 <h3>Project:</h3>
 
 <ul>
-  <li>Product List with category and filters</li>
-  <li>Product card (add and remove forms)</li>
-  <li>Cart (CART_SESSION_ID)</li>
+  <li>Product List with category, tags and filters</li>
+  <li>Product card (CART_SESSION_ID)</li>
+  <li>add and remove products with ajax</li>
   <li>Order form without payment</li>
   <li>Database == sqlite</li>
+  <li>Related products in product_detail</li>
+
 </ul>
 
 <h4>Start:</h4>
@@ -18,7 +20,6 @@
 
 #TODO for new branch:
 <ul>
-  <li>Add tags</li>
   <li>Add coupons</li>
   <li>Add profile page</li>
   <li>Add product review and comment</li>

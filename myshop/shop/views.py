@@ -78,6 +78,9 @@ def product_detail(request, id, slug):
     product_slider_img = ProductImageItem.objects.filter(product=product)
     products_in_cart_quantity = cart.get_product_quantity(product.id)
 
+    # related_products = Product.objects.filter(available=True, category=product.category)
+    related_products = Product.objects.all().order_by("category")
+
     return render(
         request,
         "shop/product/detail.html",
@@ -88,5 +91,6 @@ def product_detail(request, id, slug):
             "product_slider_img_range": range(len(product_slider_img)),
             "cart": cart,
             "products_in_cart_quantity": products_in_cart_quantity,
+            "related_products": related_products,
         },
     )
