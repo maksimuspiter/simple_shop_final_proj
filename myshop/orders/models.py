@@ -1,13 +1,18 @@
 from django.db import models
-from shop.models import Product, Account
+from shop.models import Product
+from account.models import Account
 
 
 class Order(models.Model):
     customer = models.ForeignKey(
         Account, related_name="orders", on_delete=models.SET_NULL, null=True
     )
-    first_name = models.CharField(max_length=50, help_text='введите ваше имя', verbose_name='Имя')
-    last_name = models.CharField(max_length=50, help_text='введите вашу фамилию', verbose_name='Фамилия')
+    first_name = models.CharField(
+        max_length=50, help_text="введите ваше имя", verbose_name="Имя"
+    )
+    last_name = models.CharField(
+        max_length=50, help_text="введите вашу фамилию", verbose_name="Фамилия"
+    )
     email = models.EmailField()
     address = models.CharField(
         max_length=250, help_text="введите ваш адрес", verbose_name="адрес"

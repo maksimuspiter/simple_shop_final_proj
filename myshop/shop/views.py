@@ -2,7 +2,7 @@ from typing import Any
 from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count, Q
-from .models import Category, Product, ProductImageItem, Tag, Account
+from .models import Category, Product, ProductImageItem, Tag
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
@@ -27,7 +27,7 @@ class AllProductListView(ListView):
         if ordering:
             queriset = queriset.order_by(ordering)
 
-        return queriset.prefetch_related('tags').select_related('category')
+        return queriset.prefetch_related("tags").select_related("category")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,9 +46,7 @@ class ProductsByCategory(AllProductListView):
         category_slug = self.kwargs.get("category_slug", None)
 
         if category_slug:
-            queriset = (
-                queriset.filter(category__slug=category_slug)
-            )
+            queriset = queriset.filter(category__slug=category_slug)
         return queriset
 
 
@@ -60,9 +58,7 @@ class ProductsByTag(AllProductListView):
 
         if tag_slug:
             # tag = get_object_or_404(Tag, slug=tag_slug)
-            queriset = (
-                queriset.filter(tags__slug=tag_slug)
-            )
+            queriset = queriset.filter(tags__slug=tag_slug)
         return queriset
 
 
@@ -92,14 +88,3 @@ def product_detail(request, id, slug):
             "product_comments": product_comments,
         },
     )
-
-
-# def my_account(request):
-#     if request.user.is_authenticated:
-#         account = get_object_or_404(Account, user=request.user)
-#         orders = account.orders.all()
-#         print(orders)
-#         return render(
-#             request, "shop/account/my_account.html", {"account": account, "orders": orders}
-#         )
-#     return redirect("shop:product_list")
