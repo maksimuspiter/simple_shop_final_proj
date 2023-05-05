@@ -3,19 +3,7 @@
 
 {% block left_side %}
 
-<!-- <h1>Checkout</h1>
-<div>
-  <h3>Your order</h3>
-  <ul>
-    {% for item in cart %}
-      <li>
-        {{ item.quantity }}x {{ item.product.name }}
-        <span>${{ item.total_price|floatformat:2 }}</span>
-      </li>
-    {% endfor %}
-  </ul>
-  <p>Total: ${{ cart.get_total_price|floatformat:2 }}</p>
-</div> -->
+
 <form action="" method="post">
   {% csrf_token %} {% for field in form %}
   <div class="form-group">
@@ -49,10 +37,25 @@
     <!--Shipping options -->
     <select><option class="text-muted">Standard-Delivery- €5.00</option></select>
     <!--Promocode -->
-
-    <p class="text-danger">GIVE CODE Поле не готово</p>
-    <input id="code" placeholder="Enter your code">
 </form>
+
+    
+
+    
+    <p class="text">
+      {% if activated_cupon %}
+        Промокод применен: {{activated_cupon.code}}
+      {% else %}
+        Нет промокода
+      {% endif %}  
+    </p>       
+  
+<form action="{% url 'orders:set_coupon' %}" method="post">
+  {% csrf_token %}
+    <p class="text">Промокод</p>
+      <input name="coupon_code" id="code" placeholder="Enter your code">
+    <button type="submit">Применить</button>
+</form> 
 <!--Total_price -->
 
 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
@@ -67,6 +70,5 @@
         </button>
     </a>
 {% endif %}
-
-
 {% endblock %}
+

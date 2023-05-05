@@ -72,31 +72,12 @@
     <div class="col text-right">{{ cart.get_total_price }}</div>
 </div>
 {% if cart|length > 0%}
-
-
-<form>
-    <p class="text-danger">SHIPPIN Поле не готово</p>
-    <!--Shipping options -->
-    <select><option class="text-muted">Standard-Delivery- €5.00</option></select>
-    <!--Promocode -->
-
-    <p class="text-danger">GIVE CODE Поле не готово</p>
-    <input id="code" placeholder="Enter your code">
-</form>
-<!--Total_price -->
-
-<div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-    <div class="col">Общая цена</div>
-    <div class="col text-right">{{ cart.get_total_price }}</div>
-</div>
-
     <a href="{% url 'orders:order_create' %}">
         <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Create order">
             <i class="bi-cart-fill me-1"></i>
-            Применить
+            Оформить заказ
         </button>
     </a>
 {% endif %}
-
 
 {% endblock %}
