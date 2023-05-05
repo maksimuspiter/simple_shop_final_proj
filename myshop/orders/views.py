@@ -10,7 +10,10 @@ def order_create(request):
     if request.method == "POST":
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            order = form.save()
+            order = form.save(commit=False)
+            order.customer = request.user.account
+            order.save()
+
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
@@ -18,9 +21,9 @@ def order_create(request):
                     price=item["price"],
                     quantity=item["quantity"],
                 )
-            cart.clear()
 
-            return redirect(reverse('cart:cart_detail'))
+            cart.clear()
+            return redirect(reverse("cart:cart_detail"))
 
     else:
         form = OrderCreateForm()

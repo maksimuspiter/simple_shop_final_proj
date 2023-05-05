@@ -22,4 +22,5 @@ class OrderAdmin(admin.ModelAdmin):
         "updated",
     ]
     list_filter = ["customer", "paid", "created", "updated"]
+    list_display_links = ["id", "customer"]
     inlines = [OrderItemInline]
