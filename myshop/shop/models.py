@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Avg
 
 
 class Category(models.Model):
@@ -84,6 +85,12 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", args=[self.id, self.slug])
+
+    def update_product_rating(self):
+        self.rating = self.comments.all().aggregate(Avg("product_score"))[
+            "product_score_avg"
+        ]
+        self.save()
 
 
 class ProductImageItem(models.Model):
