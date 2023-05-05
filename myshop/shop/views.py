@@ -88,3 +88,10 @@ def product_detail(request, id, slug):
             "product_comments": product_comments,
         },
     )
+
+
+def create_review(request, product_id):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "shop/comment/create.html")
