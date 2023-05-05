@@ -13,11 +13,28 @@ class Account(models.Model):
     birthday = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=[("M", "Mail"), ("F", "Fimale")])
     favorite_products = models.ManyToManyField(
-        Product, related_name="account", verbose_name="Избранные продукты"
+        Product,
+        related_name="account",
+        verbose_name="Избранные продукты",
+        blank=True,
     )
-    cupons = models.ManyToManyField(Cupon, verbose_name="Доступные купоны")
+    cupons = models.ManyToManyField(
+        Cupon,
+        verbose_name="Доступные купоны",
+        related_name="accounts",
+        blank=True,
+    )
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated = models.DateTimeField(auto_now=True, verbose_name="Последнее изменение")
+
+    activated_cupon = models.ForeignKey(
+        Cupon,
+        verbose_name="Активированный купон",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="accounts_activated",
+    )
 
     class Meta:
         ordering = ["created"]
