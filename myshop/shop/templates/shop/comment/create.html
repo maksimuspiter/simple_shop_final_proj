@@ -8,4 +8,33 @@
 
 {% block content %}
 <h1>Hello</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+    {% endfor %}
+
+    <div class="mb-3">
+        {{form.product_score}}
+    </div>
+    <div class="mb-3">
+        {{form.advantages}}
+    </div>
+    <div class="mb-3">
+        {{form.disadvantages}}    
+    </div>
+    <div class="mb-3">
+        {{form.comment}}
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+
+</form>
+
 {% endblock %}

@@ -2,10 +2,12 @@ from typing import Any
 from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count, Q
-from .models import Category, Product, ProductImageItem, Tag
+from .models import Category, Product, ProductImageItem, Tag, Comment
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
+from .forms import UserRegistrationForm
+from django.contrib.auth.decorators import login_required
 
 
 class AllProductListView(ListView):
@@ -90,8 +92,22 @@ def product_detail(request, id, slug):
     )
 
 
+@login_required
 def create_review(request, product_id):
     if request.method == "POST":
-        pass
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            body = f"Достоинства: {cd['advantages']}.\nНедостатки: {cd['disadvantages']}.\nКомментарий: {cd['comment']}"
+            Comment.objects.create(
+                product_id=product_id,
+                customer=request.user,
+                body=body,
+                product_score=cd["product_score"],
+            )
+            return redirect("account:my_account")
+
     else:
-        return render(request, "shop/comment/create.html")
+        form = UserRegistrationForm()
+
+    return render(request, "shop/comment/create.html", {"form": form})
