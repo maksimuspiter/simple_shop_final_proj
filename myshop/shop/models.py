@@ -88,7 +88,7 @@ class Product(models.Model):
 
     def update_product_rating(self):
         self.rating = self.comments.all().aggregate(Avg("product_score"))[
-            "product_score_avg"
+            "product_score__avg"
         ]
         self.save()
 

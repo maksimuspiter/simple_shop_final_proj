@@ -106,6 +106,7 @@ def create_review(request, product_id):
                 body=body,
                 product_score=cd["product_score"],
             )
+            product.update_product_rating()
             return redirect("account:my_account")
 
     else:
