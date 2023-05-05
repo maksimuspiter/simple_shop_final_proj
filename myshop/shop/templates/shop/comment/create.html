@@ -7,7 +7,16 @@
 
 
 {% block content %}
-<h1>Hello</h1>
+<h1>Ваш отзыв о товаре</h1>
+<div>
+    <img src="{{product.image_title.url}}" width="200" alt="">
+</div>
+<div>
+    <span>{{product.name}}</span>
+</div>
+<div>
+    <p>Если качество покупки вас устроило, можете поставить только оценку товара. Остальные поля - не обязательны.</p>
+</div>
 
 <form method="post">
     {% csrf_token %}
@@ -32,7 +41,11 @@
         {{form.comment}}
     </div>
 
-
+<div class="mb-3">
+    <p>
+        Фото товара сделают ваш отзыв полезнее. Помогите другим покупателям с выбором, добавив фотографии товара.
+    </p>
+</div>
     <button type="submit" class="btn btn-primary">Отправить отзыв</button>
 
 </form>

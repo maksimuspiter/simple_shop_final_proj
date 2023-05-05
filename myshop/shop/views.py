@@ -94,13 +94,14 @@ def product_detail(request, id, slug):
 
 @login_required
 def create_review(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             body = f"Достоинства: {cd['advantages']}.\nНедостатки: {cd['disadvantages']}.\nКомментарий: {cd['comment']}"
             Comment.objects.create(
-                product_id=product_id,
+                product=product,
                 customer=request.user,
                 body=body,
                 product_score=cd["product_score"],
@@ -110,4 +111,6 @@ def create_review(request, product_id):
     else:
         form = UserRegistrationForm()
 
-    return render(request, "shop/comment/create.html", {"form": form})
+    return render(
+        request, "shop/comment/create.html", {"form": form, "product": product}
+    )
