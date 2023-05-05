@@ -12,8 +12,6 @@
                     {% with rating=product.rating %}
                         {% include "shop/product/include/product_stars.html" %}
                     {% endwith %}
-                    <span>{{product.rating|floatformat:1}}</span>
-
                     <!-- Product price-->
                     <span >{{product.price}} ₽</span>
 

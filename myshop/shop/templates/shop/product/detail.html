@@ -18,9 +18,12 @@
         <h2 class="fw-bolder mb-4 text-center">Похожие товары</h2>
         {% include "shop/product/include/related_product_for_detail.html" %}
     {% endif %}
+
     <hr>
     {% if product_comments%}
-        <h2 class="fw-bolder mb-4 text-center">Отзывы о товаре</h2>
+        <h2 class="fw-bolder mb-4 text-center">Отзывы о товаре </h2>
+        <a href="{% url 'shop:create_review' product.id %}"><h3>Написать отзыв</h3></a>
+
         {% include "shop/product/include/product_comments.html" %}
     {% endif %}
 {% endblock %}
