@@ -26,6 +26,12 @@ def order_create(request):
             return redirect(reverse("cart:cart_detail"))
 
     else:
-        form = OrderCreateForm()
+        form = OrderCreateForm(
+            initial={
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name,
+                "email": request.user.email,
+            }
+        )
 
     return render(request, "orders/order/create.html", {"cart": cart, "form": form})
