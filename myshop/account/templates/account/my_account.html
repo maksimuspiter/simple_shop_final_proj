@@ -23,9 +23,9 @@
                     </div>
                     <div class="col-4">
                         {% if order.paid %}
-                            <span class="p-1 bg-success text-white rounded-pill">Оплачено: {{order.get_total_cost}} ₽</span>
+                            <span class="p-1 bg-success text-white rounded-pill">Оплачено: {{order.total_price}} ₽</span>
                         {% else %}
-                            <span class="p-1 bg-warning text-dark rounded-pill">Не оплачено: {{order.get_total_cost}} ₽</span>
+                            <span class="p-1 bg-warning text-dark rounded-pill">Не оплачено: {{order.total_price}} ₽</span>
                         {% endif %}
                     </div>
                 </div>
