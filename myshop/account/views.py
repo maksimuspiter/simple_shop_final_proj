@@ -1,4 +1,3 @@
-from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from .models import Account
 from django.contrib.auth import authenticate, login, logout
@@ -9,8 +8,13 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def my_account(request):
-    account = get_object_or_404(Account, user=request.user)
-    orders = account.orders.all()
+    account = get_object_or_404(
+        Account.objects.
+        prefetch_related("cupons").
+        prefetch_related("favorite_products"),
+        user=request.user,
+    )
+    orders = account.orders.prefetch_related("items")
     return render(
         request, "account/my_account.html", {"account": account, "orders": orders}
     )
