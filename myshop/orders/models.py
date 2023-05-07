@@ -3,6 +3,31 @@ from shop.models import Product
 from account.models import Account
 
 
+class Status(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+
+    class Meta:
+        verbose_name = "Статус"
+        verbose_name_plural = "Статусы"
+
+    def __str__(self):
+        return self.name
+
+
+class Delivery(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+
+    class Meta:
+        verbose_name = "Доставка"
+        verbose_name_plural = "Доставки"
+
+    def __str__(self):
+        return self.name
+
+
 class Order(models.Model):
     customer = models.ForeignKey(
         Account, related_name="orders", on_delete=models.SET_NULL, null=True
@@ -25,6 +50,10 @@ class Order(models.Model):
     paid = models.BooleanField(default=False)
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)
+    delivery = models.ForeignKey(
+        Delivery, on_delete=models.SET_NULL, null=True, blank=True
     )
 
     class Meta:
