@@ -38,7 +38,7 @@ class Order(models.Model):
 
     def get_total_cost(self):
         total_cost = sum(
-            item.get_cost for item in self.items.all()
+            item.get_cost() for item in self.items.all()
         )  # From OrderItem (related_name="items")
         return total_cost
 
