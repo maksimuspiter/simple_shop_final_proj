@@ -11,7 +11,7 @@
   </div>
   {% endfor %}
 
-    <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Submit">
+    <button class="btn_cart btn-outline-dark flex-shrink-0" type="submit" value="Submit">
       <i class="bi-cart-fill me-1"></i>
       Оформить
   </button>
@@ -22,7 +22,7 @@
 {% block right_side %}
 <div><h5><b>Итог</b></h5></div>
 <hr>
-<div class="row">
+<div class="row ">
     <!--Count_item -->
     <div class="col" style="padding-left:0;">Товаров: {{cart|length}}</div>
     <!--Total_price -->
@@ -31,30 +31,26 @@
 
 {% if cart|length > 0%}
 
-
-<form>
-    <p class="text-danger">SHIPPIN Поле не готово</p>
-    <!--Shipping options -->
-    <select><option class="text-muted">Standard-Delivery- €5.00</option></select>
-    <!--Promocode -->
-</form>
-
-    
-
-    
-    <p class="text">
-      {% if activated_cupon %}
-        Промокод применен: {{activated_cupon.code}}
-      {% else %}
-        Нет промокода
-      {% endif %}  
-    </p>       
+  <div class="mt-2">
+    {% if activated_cupon %}
+      <span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">{{activated_cupon.code}}</span>
+      <div>
+        <span>Скидка: </span>
+      </div>
+    {% else %}
+      <span>Нет промокода</span>
+    {% endif %}  
+  </div>    
   
 <form action="{% url 'orders:set_coupon' %}" method="post">
   {% csrf_token %}
-    <p class="text">Промокод</p>
-      <input name="coupon_code" id="code" placeholder="Enter your code">
-    <button type="submit">Применить</button>
+    <div class="d-flex align-items-center">
+      <input name="coupon_code" id="code" placeholder="Промокод" type="text" class="form-control">
+      <button class="btn btn-outline-success btn-sm" type="submit">Применить</button> 
+    </div>
+
+
+
 </form> 
 <!--Total_price -->
 
@@ -62,13 +58,6 @@
     <div class="col">Общая цена</div>
     <div class="col text-right">{{ cart.get_total_price }}</div>
 </div>
-
-    <a href="{% url 'orders:order_create' %}">
-        <button class="btn btn-outline-dark flex-shrink-0" type="submit" value="Create order">
-            <i class="bi-cart-fill me-1"></i>
-            Применить
-        </button>
-    </a>
 {% endif %}
 {% endblock %}
 
