@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from shop.models import Product
+from shop.models import Product, Cupon
 
 
 class Cart:
@@ -34,7 +34,11 @@ class Cart:
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {"quantity": 0, "price": str(product.price)}
+            self.cart[product_id] = {
+                "quantity": 0,
+                "price": str(product.price),
+                "discount": 0,
+            }
 
         if override_quantity:
             self.cart[product_id]["quantity"] = quantity
@@ -61,6 +65,14 @@ class Cart:
             Decimal(item["price"]) * item["quantity"] for item in self.cart.values()
         )
 
+    def get_total_price_with_discount(self):
+        return sum(
+            Decimal(item["price"])
+            * item["quantity"]
+            * Decimal(1 - item["discount"] / 100)
+            for item in self.cart.values()
+        )
+
     def get_products_ids(self):
         ids = [int(id) for id in self.cart.keys()]
         return ids
@@ -69,3 +81,8 @@ class Cart:
         if self.cart.get(str(product_id), None):
             return self.cart[str(product_id)]["quantity"]
         return 0
+
+    def add_discount(self, discount: int):
+        for item in self.cart.values():
+            item["discount"] = discount
+        self.save()

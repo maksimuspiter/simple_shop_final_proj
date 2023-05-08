@@ -1,4 +1,5 @@
 {% extends 'base_cart/base_cart.html' %} 
+{% load static %}
 {% block title %} Checkout {% endblock%} 
 
 {% block left_side %}
@@ -24,14 +25,21 @@
 <hr>
 <div class="row ">
     <!--Count_item -->
-    <div class="col" style="padding-left:0;">Товаров: {{cart|length}}</div>
+    <div class="col-5" style="padding-left:0;">Товаров: {{cart|length}}</div>
     <!--Total_price -->
-    <div class="col text-right">{{ cart.get_total_price }}</div>
+    <div class="col-7 text-right" id="total_price_result_before_and_after_cupon">
+      {% if activated_cupon %}
+        <span><s>{{ cart.get_total_price }}</s></span><span> {{ cart.get_total_price_with_discount|floatformat:2}}</span>
+      {% else %}
+        <span>{{ cart.get_total_price }}</span>
+      {% endif %}  
+
+      </div>
 </div>
 
 {% if cart|length > 0%}
 
-  <div class="mt-2">
+  <div class="mt-2" id="promocode_data">
     {% if activated_cupon %}
       <span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">{{activated_cupon.code}}</span>
       <div>
@@ -42,22 +50,40 @@
     {% endif %}  
   </div>    
   
-<form action="{% url 'orders:set_coupon' %}" method="post">
+<div id="promocode_add_result"></div>
+
+<form id="add_promocode_form_post" method="post">
   {% csrf_token %}
     <div class="d-flex align-items-center">
-      <input name="coupon_code" id="code" placeholder="Промокод" type="text" class="form-control">
+      <input name="coupon_code" id="user_promo_code" placeholder="Промокод" type="text" class="form-control">
       <button class="btn btn-outline-success btn-sm" type="submit">Применить</button> 
     </div>
-
-
-
 </form> 
 <!--Total_price -->
 
 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
     <div class="col">Общая цена</div>
-    <div class="col text-right">{{ cart.get_total_price }}</div>
+
+    {% if activated_cupon %}
+      <div class="col text-right" id="total_price_result">{{ cart.get_total_price_with_discount|floatformat:2}}</div>
+    {% else %}
+      <div class="col text-right" id="total_price_result">{{ cart.get_total_price }}</div>
+    {% endif %}  
+
 </div>
 {% endif %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'orders/js/add_promo_code.js' %}"></script>
+
+<script>
+$(document).on('submit', '#add_promocode_form_post',function(e){
+  const url = "{% url 'orders:set_coupon' %}";
+  const coupon_code=$('#user_promo_code').val();
+  add_promo_code(url, coupon_code, "promocode_data", "promocode_add_result", "total_price_result_before_and_after_cupon", "total_price_result");
+  return false;
+});
+</script>
 {% endblock %}
 

@@ -42,20 +42,34 @@ def order_create(request):
     return render(
         request,
         "orders/order/create.html",
-        {"cart": cart, "form": form, 'ass': 'hello', "activated_cupon": activated_cupon},
+        {"cart": cart, "form": form, "activated_cupon": activated_cupon},
     )
 
 
 @require_POST
 def set_coupon(request):
     coupon_code = request.POST.get("coupon_code")
-    coupon = Cupon.objects.filter(code=coupon_code).first()
+    coupon = Cupon.objects.filter(code=coupon_code, active=True).first()
     result = False
+    price_before_discount = None
+    price_after_discount = None
     if coupon:
         request.user.account.activated_cupon = coupon
         request.user.account.save()
+        cart = Cart(request)
+        cart.add_discount(coupon.discount)
+        price_before_discount = "%.2f" % round(cart.get_total_price(), 2)
+        price_after_discount = "%.2f" % round(cart.get_total_price_with_discount(), 2)
         result = True
+
     return HttpResponse(
-        json.dumps({"result": result, "coupon_code": coupon_code}),
+        json.dumps(
+            {
+                "result": result,
+                "coupon_code": coupon_code,
+                "price_before_discount": price_before_discount,
+                "price_after_discount": price_after_discount,
+            }
+        ),
         content_type="application/json",
     )
