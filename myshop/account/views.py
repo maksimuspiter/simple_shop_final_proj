@@ -44,6 +44,38 @@ def my_copons(request):
     )
 
 
+@login_required
+def my_favorite_products(request):
+    account = get_object_or_404(
+        Account.objects.select_related("user"),
+        user=request.user,
+    )
+    favorite_products = account.favorite_products.all()
+    cart = Cart(request)
+    cart_products_with_quantity = get_products_with_quantity(cart)
+    
+    print(cart_products_with_quantity)
+
+    return render(
+        request,
+        "account/my_favorite_products.html",
+        {
+            "account": account,
+            "favorite_products": favorite_products,
+            "cart": cart,
+            "cart_products_with_quantity": cart_products_with_quantity,
+        },
+    )
+
+
+def get_products_with_quantity(cart):
+    product_ids_in_cart = cart.get_products_ids()
+    products_with_quantity = {}
+    for product_id in product_ids_in_cart:
+        products_with_quantity[product_id] = cart.get_product_quantity(product_id)
+    return products_with_quantity
+
+
 def user_login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)

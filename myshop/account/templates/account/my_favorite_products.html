@@ -1,0 +1,59 @@
+{% extends 'base_account/base_account.html' %} 
+{% load static %}
+{% load account_filters %}
+
+{% block title %}
+    Личный кабинет
+{% endblock %}
+
+
+{% block content %}
+<h1 class="text-center">Избранные товары</h1>
+
+{% if favorite_products %}
+<div class="container">
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+    {% for product in favorite_products %}
+    <div class="col mb-5">
+        <div class="card h-100 d-flex align-items flex-column">
+    
+            <div class="mb-auto p-2">
+                <a href="{{product.get_absolute_url}}">
+                <img class="card-img-top" src="{{product.image_title.url}}" alt="{{product.name}}">
+                </a>
+            </div>
+                <div class="p-2">
+                <div class="text-center">
+                    <h5 class="fw-bolder">{{product.name}}</h5>
+                    {% with rating=product.rating %}
+                        {% include "shop/product/include/product_stars.html" %}
+                    {% endwith %}
+                        <span class="text">{{product.price}} ₽</span>
+        
+                </div>
+            </div>
+    
+            <!-- Product actions-->
+            <!-- <div class="p-2">
+                <div class="card-footer border-top-0 bg-transparent text-center">
+                    {% if product.id in cart_products_with_quantity %}
+                        {% with products_in_cart_quantity=cart_products_with_quantity|get_item:product.id %}
+                            {% include "shop/product/include/button_in_cart.html" %}
+                        {% endwith %}
+                        <span>В карзине: {{cart_products_with_quantity|get_item:product.id }}</span>
+                    {% else %}
+                        <span>Нет в карзине</span>
+
+                    {% endif %}
+                </div>
+            </div> -->
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+{% else %}
+<span>У вас еще нет избранных товаров</span>
+{% endif %}
+{% endblock %}
