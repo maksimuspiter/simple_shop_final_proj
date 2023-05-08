@@ -25,7 +25,7 @@ class Delivery(models.Model):
         verbose_name_plural = "Доставки"
 
     def __str__(self):
-        return self.name
+        return f"{self.name}: {self.price}₽"
 
 
 class Order(models.Model):
