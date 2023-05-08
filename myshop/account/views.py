@@ -4,17 +4,22 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, AccountEditForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from shop.models import Cupon
+from orders.models import Order
 
 
 @login_required
 def my_account(request):
     account = get_object_or_404(
-        Account.objects.
-        prefetch_related("cupons").
-        prefetch_related("favorite_products"),
+        Account.objects.prefetch_related("cupons").select_related("user"),
         user=request.user,
     )
-    orders = account.orders.prefetch_related("items")
+    orders = (
+        Order.objects.filter(customer=account)
+        .select_related("customer")
+        .prefetch_related("items__product")
+    )
+
     return render(
         request, "account/my_account.html", {"account": account, "orders": orders}
     )
