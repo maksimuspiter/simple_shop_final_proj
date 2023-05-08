@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -158,3 +159,8 @@ class Cupon(models.Model):
 
     def __str__(self):
         return self.code
+
+    def check_active(self):
+        now = timezone.now()
+        self.active = self.valid_from >= now and self.valid_until <= now
+        self.save()
