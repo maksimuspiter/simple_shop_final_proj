@@ -1,16 +1,21 @@
-<h1>Simple Shop project</h1>
-<h2>Django 4.2</h2>
+<h1>Simple Shop</h1>
+<h2>Stack:</h2>
+<ul>
+  <li>Django 4.2</li>
+  <li>Python >= 3.10</li>
+  <li>sqlite3</li>
+</ul>
 
-<h3>Project:</h3>
+<h3>Elements:</h3>
 
 <ul>
   <li>Product List with category, tags and filters</li>
   <li>Product card (CART_SESSION_ID)</li>
   <li>add and remove products in cart with ajax</li>
   <li>Order form without payment</li>
-  <li>Database == sqlite</li>
   <li>Related products in product_detail</li>
   <li>Product star system and customer feedback </li>
+  <li>Coupons in Orders and Account</li>
 
 </ul>
 
@@ -21,8 +26,7 @@
 
 #TODO in future:
 <ul>
-  <li>Add coupons in Orders and Account</li>
-  <li>Refactor profile page</li>
+
   <li>Add favorite products in account and cart (before order) </li>
   <li>Add file to coomments </li>
 
