@@ -35,9 +35,8 @@
             <div>
                 <a href="{% url 'cart:cart_detail'%}">
                     <i class="bi-cart text-light me-1"></i>
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">
-                        {{cart|length}}
-                    </span>
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" 
+                    id="product_in_cart_quantity_navbar">{{cart|length}}</span>
                 </a>
             </div>
             <div>
