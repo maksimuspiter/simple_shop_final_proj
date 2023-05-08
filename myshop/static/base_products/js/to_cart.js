@@ -25,11 +25,12 @@ function change_quantity_cart(url, action, product_id) {
       "X-CSRFToken": getCookie("csrftoken"),
     },
     success: (data) => {
+      console.log(data);
       if (data.result) {
-        let products_quantity_new = document.getElementById(
+        document.getElementById(
           "product-in-cart-quantity-" + product_id
-        );
-        products_quantity_new.innerHTML = data.final_quantity_in_cart;
+        ).innerHTML = data.final_quantity_in_cart;
+        change_quantity_cart_navbar(data.all_products_in_cart_quantity);
       }
     },
 
@@ -37,4 +38,11 @@ function change_quantity_cart(url, action, product_id) {
       console.log(error);
     },
   });
+}
+
+function change_quantity_cart_navbar(quantity) {
+  let navbar_quantity_element = document.getElementById(
+    "product_in_cart_quantity_navbar"
+  );
+  navbar_quantity_element.innerHTML = quantity;
 }

@@ -63,6 +63,7 @@ def cart_remove(request, product_id):
 def cart_change_ajax(request, product_id):
     result = None
     quantity = None
+    all_products_in_cart_quantity = None
 
     if request.method == "POST":
         action = request.POST.get("action")
@@ -78,6 +79,7 @@ def cart_change_ajax(request, product_id):
 
             result = True
             quantity_in_cart = cart.get_product_quantity(product_id)
+            all_products_in_cart_quantity = len(cart)
 
             final_quantity_in_cart = quantity_in_cart + quantity
             if final_quantity_in_cart > 0:
@@ -94,7 +96,11 @@ def cart_change_ajax(request, product_id):
 
     return HttpResponse(
         json.dumps(
-            {"result": result, "final_quantity_in_cart": final_quantity_in_cart}
+            {
+                "result": result,
+                "final_quantity_in_cart": final_quantity_in_cart,
+                "all_products_in_cart_quantity": all_products_in_cart_quantity,
+            }
         ),
         content_type="application/json",
     )
