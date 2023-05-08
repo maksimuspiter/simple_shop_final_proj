@@ -1,0 +1,37 @@
+{% extends 'base_account/base_account.html' %} 
+{% load static %}
+
+{% block title %}
+    Личный кабинет
+{% endblock %}
+
+
+{% block content %}
+<h1 class="text-center">Мои купоны</h1>
+
+{% if account.cupons.all %}
+<div class="container">
+<div class="row mx-2">
+    {% for cupon in account.cupons.all %}
+    <div class="col-5 m-2 border border-info rounded">
+        <div class="text-center bg-success text-white">
+          <h5>{{cupon.code}}</h5>
+          <p>Скидка: {{cupon.discount}}</p>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">Действителен с {{cupon.valid_from}}</li>
+            <li class="list-group-item">Действителен до {{cupon.valid_until}}</li>
+            </ul>
+        </div>
+        <div>
+          <a href="" class="card-link">Add informations</a>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+{% else %}
+<span>У вас еще нет доступных купонов</span>
+{% endif %}
+{% endblock %}

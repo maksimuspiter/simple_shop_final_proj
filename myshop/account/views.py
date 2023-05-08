@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from shop.models import Cupon
 from orders.models import Order
+from cart.cart import Cart
 
 
 @login_required
@@ -19,9 +20,27 @@ def my_account(request):
         .select_related("customer")
         .prefetch_related("items__product")
     )
+    cart = Cart(request)
 
     return render(
-        request, "account/my_account.html", {"account": account, "orders": orders}
+        request,
+        "account/my_account.html",
+        {"account": account, "orders": orders, "cart": cart},
+    )
+
+
+@login_required
+def my_copons(request):
+    account = get_object_or_404(
+        Account.objects.prefetch_related("cupons").select_related("user"),
+        user=request.user,
+    )
+    cart = Cart(request)
+
+    return render(
+        request,
+        "account/my_copons.html",
+        {"account": account, "cart": cart},
     )
 
 
