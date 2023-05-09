@@ -24,7 +24,7 @@ class MessagesInline(admin.TabularInline):
     raw_id_fields = ["chat"]
     extra = 2
     formfield_overrides = {
-    models.TextField: {'widget': Textarea(attrs={'rows':20, 'cols':40})},
+    models.TextField: {'widget': Textarea(attrs={'rows':1, 'cols':40})},
 }  
 
 
