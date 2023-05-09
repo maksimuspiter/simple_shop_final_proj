@@ -1,0 +1,24 @@
+{% extends 'base_support/base_support.html' %} 
+
+{% block messages %}
+<h1>{{chat}}</h1>
+
+    <div id="messages">
+        {% for message in messages %}
+        
+            {% if message.creator == "U" %}
+                {% include "support/include/user_message.html" %}
+
+            {% elif message.creator == "A" %}
+                {% include "support/include/admin_message.html" %}
+            {% endif %}
+        {% endfor %}
+
+
+    </div>
+    <div id="dialog-window" class="form-outline pt-5">
+        <textarea class="form-control mb-2" id="textAreaExample2" rows="2"></textarea>
+        <label class="form-label" for="textAreaExample2">Сообщение</label>
+        <button type="button" class="btn btn-info btn-rounded float-end">отправить</button>
+    </div>
+{% endblock %}
