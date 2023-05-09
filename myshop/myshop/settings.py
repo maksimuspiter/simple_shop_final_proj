@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "cart",
     "orders",
     "account",
+    "support",
     "debug_toolbar",
 ]
 
