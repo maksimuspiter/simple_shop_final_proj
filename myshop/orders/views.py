@@ -2,11 +2,12 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import OrderCreateForm
 from cart.cart import Cart
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Status
 from account.models import Account
 from shop.models import Cupon
 from django.views.decorators.http import require_POST
 import json
+from decimal import Decimal
 
 
 def order_create(request):
@@ -16,16 +17,19 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
             order.customer = request.user.account
+            order.status = Status.objects.get(slug="sozdano")
+            order.total_price = cart.get_total_price_with_discount() + Decimal(order.delivery.price)
             order.save()
 
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
                     product=item["product"],
-                    price=item["price"],
+                    price=item["total_price_with_discount"],
                     quantity=item["quantity"],
                 )
-
+            
+            request.user.account.remove_cupon()
             cart.clear()
             return redirect(reverse("cart:cart_detail"))
 
@@ -50,6 +54,7 @@ def order_create(request):
 def set_coupon(request):
     coupon_code = request.POST.get("coupon_code")
     coupon = Cupon.objects.filter(code=coupon_code, active=True).first()
+    # all_user_coupons = Account.objects.get(user=request.user).cupons
     result = False
     price_before_discount = None
     price_after_discount = None
