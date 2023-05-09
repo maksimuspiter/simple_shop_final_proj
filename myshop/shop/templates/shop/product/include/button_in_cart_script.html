@@ -4,7 +4,7 @@
 <script src="{% static 'base_products/js/to_cart.js' %}"></script>
 
 <script>
-  const url = "{% url 'cart:cart-ajax' product.id %}";
+  const url = "{% url 'cart:cart-ajax' %}";
 
   function add_in_cart(product_id) {
     change_quantity_cart(url, 'add', product_id);
