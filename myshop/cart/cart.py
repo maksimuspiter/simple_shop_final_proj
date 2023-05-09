@@ -87,3 +87,10 @@ class Cart:
         for item in self.cart.values():
             item["discount"] = discount
         self.save()
+
+    def get_products_with_quantity(self):
+        product_ids_in_cart = self.get_products_ids()
+        products_with_quantity = {}
+        for product_id in product_ids_in_cart:
+            products_with_quantity[product_id] = self.get_product_quantity(product_id)
+        return products_with_quantity
