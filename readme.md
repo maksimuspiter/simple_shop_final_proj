@@ -24,15 +24,32 @@
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
 
-#TODO in future:
+#TODO0 in future:
 <ul>
+  <li>Refactor orders (total_price, delivery, coupons)</li>
+  <li>Refactor button +- in cart (account/main/my_favorite_products/)</li>
+  <li>Add all href in account templates</li>
 
+</ul>
+
+#TODO1 in future:
+<ul>
   <li>Add favorite products in account and cart (before order) </li>
   <li>Add file to coomments </li>
+  <li>Add chat with support</li>
+  <li>Add e-check</li>
 
+</ul>
+
+#TODO2 in future:
+<ul>
+  <li>Add EditorConfig</li>
+  <li>Add Tests</li>
+</ul>
+
+#TODO3 in future:
+<ul>
   <li>Add Task, celery, send email</li>
-
   <li>Change database --> PostgreSQL</li>
   <li>Add Django REST framework</li>
-  <li></li>
 </ul>
