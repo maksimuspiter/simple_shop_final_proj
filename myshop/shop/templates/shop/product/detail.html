@@ -21,9 +21,23 @@
 
     <hr>
     {% if product_comments%}
-        <h2 class="fw-bolder mb-4 text-center">Отзывы о товаре </h2>
-        <a href="{% url 'shop:create_review' product.id %}"><h3>Написать отзыв</h3></a>
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-center">
 
+                    <div class="mb-4 text-center">
+                        <h2>Отзывы о товаре </h2>
+                    </div>
+                    <div>
+                        <span class="badge bg-info text-white ms-1 rounded-pill">{{product_comments_len}}</span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col">
+                <a href="{% url 'shop:create_review' product.id %}"><h3>Написать отзыв</h3></a>
+            </div>
+        </div>
         {% include "shop/product/include/product_comments.html" %}
     {% endif %}
     {% include "shop/product/include/button_in_cart_script.html" %}
