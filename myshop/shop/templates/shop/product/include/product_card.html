@@ -1,3 +1,4 @@
+{% load account_filters %}
 <div class="col mb-5">
     <div class="card h-100 d-flex align-items flex-column">
 
@@ -31,40 +32,11 @@
 
         <!-- Product actions-->
         <div class="p-2">
-            <div class="card-footer border-top-0 bg-transparent text-center">
-                <div>
-
-                    {% if product.pk in product_ids_in_cart %}
-                  
-                    <div class="d-flex justify-content-center">
-                  
-                      <a href="{% url 'cart:cart_detail' %}">
-                        <button class="btn btn-success" type="submit" value="Add to cart">
-                          В карзине <i class="bi bi-cart"></i>
-                        </button>
-                      </a>
-                  
-                      <!-- <form action="{% url 'cart:cart_remove' product.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="next" value="{{ request.path }}" />
-                  
-                        <button class="btn btn-danger" type="submit" value="Add to cart">
-                          X
-                        </button>
-                      </form> -->
-                  
-                    </div>
-                    {% else %}
-                    <a href="{{product.get_absolute_url}}">
-                      <button class="btn btn-info" type="submit" value="Add to cart">
-                        Подробнее
-                      </button>
-                    </a>   
-                  
-                  
-                    {% endif %}
-                  </div>
-            </div>
+          <div class="card-footer d-flex justify-content-center">
+              {% with products_in_cart_quantity=cart_products_with_quantity|get_item:product.id %}
+                  {% include "shop/product/include/button_in_cart.html" %}
+              {% endwith %}
+          </div>
         </div>
     </div>
 </div>
