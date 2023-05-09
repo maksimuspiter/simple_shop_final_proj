@@ -59,42 +59,47 @@ def cart_remove(request, product_id):
         return HttpResponseRedirect(next)
     return redirect("cart:cart_detail")
 
-
-def cart_change_ajax(request, product_id):
-    result = None
+@require_POST
+def cart_change_ajax(request):
+    result = False
     quantity = None
     all_products_in_cart_quantity = None
+    final_quantity_in_cart = None
+    all_products_in_cart_quantity = None
+    
+    product_id = request.POST.get("product_id")
+    action = request.POST.get("action")
 
-    if request.method == "POST":
-        action = request.POST.get("action")
+    if product_id and action:
+
         if action == "add":
             quantity = 1
         elif action == "remove":
             quantity = -1
 
-    if quantity:
-        try:
-            cart = Cart(request)
-            product = get_object_or_404(Product, id=product_id)
+        if quantity:
+            try:
+                cart = Cart(request)
+                product = get_object_or_404(Product, id=product_id)
 
-            result = True
-            quantity_in_cart = cart.get_product_quantity(product_id)
-            
-
-            final_quantity_in_cart = quantity_in_cart + quantity
-            if final_quantity_in_cart > 0:
-                cart.add(product=product, quantity=quantity)
-            elif final_quantity_in_cart == 0:
-                cart.remove(product)
-
-            elif final_quantity_in_cart < 0:
-                result = False
-                final_quantity_in_cart = 0
+                result = True
+                quantity_in_cart = cart.get_product_quantity(product_id)
                 
-            all_products_in_cart_quantity = len(cart)
 
-        except:
-            result = False
+                final_quantity_in_cart = quantity_in_cart + quantity
+                if final_quantity_in_cart > 0:
+                    cart.add(product=product, quantity=quantity)
+                elif final_quantity_in_cart == 0:
+                    cart.remove(product)
+
+                elif final_quantity_in_cart < 0:
+                    result = False
+                    final_quantity_in_cart = 0
+                    
+                all_products_in_cart_quantity = len(cart)
+
+            except:
+                result = False
 
     return HttpResponse(
         json.dumps(

@@ -18,7 +18,7 @@ function change_quantity_cart(url, action, product_id) {
   $.ajax({
     url: url,
     type: "POST",
-    data: jQuery.param({ action: action }),
+    data: jQuery.param({ "action": action,  "product_id":product_id}),
     dataType: "json",
     headers: {
       "X-Requested-With": "XMLHttpRequest",
