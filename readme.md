@@ -26,9 +26,11 @@
 
 #TODO0 in future:
 <ul>
-  <li>Refactor orders (total_price, delivery, coupons)</li>
-  <li>Refactor button +- in cart (account/main/my_favorite_products/)</li>
   <li>Add all href in account templates</li>
+  <li>Refactor chats</li>
+  <li>Add chats form</li>
+  <li>Refactor messages (read_message)</li>
+  <li>Add img in account</li>
 
 </ul>
 
