@@ -24,35 +24,29 @@
                 </a>
             </div>
                 <div class="p-2">
-                <div class="text-center">
-                    <h5 class="fw-bolder">{{product.name}}</h5>
-                    {% with rating=product.rating %}
-                        {% include "shop/product/include/product_stars.html" %}
-                    {% endwith %}
-                        <span class="text">{{product.price}} ₽</span>
-        
-                </div>
-            </div>
-    
-            <!-- Product actions-->
-            <!-- <div class="p-2">
-                <div class="card-footer border-top-0 bg-transparent text-center">
-                    {% if product.id in cart_products_with_quantity %}
-                        {% with products_in_cart_quantity=cart_products_with_quantity|get_item:product.id %}
-                            {% include "shop/product/include/button_in_cart.html" %}
+                    <div class="text-center">
+                        <h5 class="fw-bolder">{{product.name}}</h5>
+                        {% with rating=product.rating %}
+                            {% include "shop/product/include/product_stars.html" %}
                         {% endwith %}
-                        <span>В карзине: {{cart_products_with_quantity|get_item:product.id }}</span>
-                    {% else %}
-                        <span>Нет в карзине</span>
-
-                    {% endif %}
+                            <span class="text">{{product.price}} ₽</span>
+            
+                    </div>
                 </div>
-            </div> -->
+    
+            <div class="p-2">
+                <div class="card-footer d-flex justify-content-center">
+                    {% with products_in_cart_quantity=cart_products_with_quantity|get_item:product.id %}
+                        {% include "shop/product/include/button_in_cart.html" %}
+                    {% endwith %}
+                </div>
+            </div>            
         </div>
     </div>
     {% endfor %}
     
 </div>
+{% include "shop/product/include/button_in_cart_script.html" %}
 {% else %}
 <span>У вас еще нет избранных товаров</span>
 {% endif %}
