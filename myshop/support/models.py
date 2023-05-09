@@ -63,6 +63,7 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField(verbose_name="Текст сообщения")
     created = models.DateTimeField(auto_now_add=True)
+    viewed = models.BooleanField(default=False, verbose_name="Просмотрено")
 
     creator = models.CharField(
         max_length=1,
@@ -72,9 +73,13 @@ class Message(models.Model):
     )
 
     class Meta:
-        ordering = ["-created"]
+        ordering = ["created"]
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
 
     def __str__(self):
         return f"{self.chat.user}: {self.created}"
+
+    def read_message(self):
+        self.viewed = True
+        self.save()
