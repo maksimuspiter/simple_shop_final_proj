@@ -46,3 +46,9 @@ class Account(models.Model):
 
     def __str__(self):
         return f"{self.user.id}: {self.user.last_name} {self.user.first_name}"
+
+    def remove_cupon(self):
+        activated_cupon = self.activated_cupon
+        self.cupons.remove(activated_cupon)
+        self.activated_cupon = None
+        self.save()
