@@ -79,7 +79,7 @@ def cart_change_ajax(request, product_id):
 
             result = True
             quantity_in_cart = cart.get_product_quantity(product_id)
-            all_products_in_cart_quantity = len(cart)
+            
 
             final_quantity_in_cart = quantity_in_cart + quantity
             if final_quantity_in_cart > 0:
@@ -90,6 +90,8 @@ def cart_change_ajax(request, product_id):
             elif final_quantity_in_cart < 0:
                 result = False
                 final_quantity_in_cart = 0
+                
+            all_products_in_cart_quantity = len(cart)
 
         except:
             result = False
