@@ -1,13 +1,15 @@
 {% extends 'base_support/base_support.html' %} 
+{% load static %}
 
 {% block messages %}
-<div class="container pt-3 border border-3 border-secondary rounded" style="min-height: 400px;">
+<div class="container pt-3 border border-3 border-secondary rounded" 
+style="min-height: 400px;">
 
     <div class="pb-2 text-center">
-        <h3>{{chat}}</h3>
+        <h3>{{chat.type}}</h3>
     </div>
 
-    <div id="messages">
+    <div id="messages" class="overflow-auto" style="max-height: 300px;">
         {% for message in messages %}
             <div class="mb-2 mt-1">
                 {% if message.creator == "U" %}
@@ -19,17 +21,41 @@
             </div>
         {% endfor %}
 
-
     </div>
+
     <div id="dialog-window" class="form-outline mt-5">
-        <textarea class="form-control mb-2" id="textAreaExample2" rows="2"></textarea>
+        <form id="create-message" method="post">
+            {% csrf_token %}
+            <textarea id="message-text" class="form-control mb-2" rows="2"></textarea>
             <div class="row">
-                <div class="col"><span class="ps-5">Сообщение</span></div>
+
+                <div class="col">
+                    <span class="ps-5">Сообщение</span>
+                </div>
                <div class="col">
-                    <button type="button" class="btn btn-info btn-rounded ">отправить</button>   
+                    <button type="submit" class="btn btn-info btn-rounded ">отправить</button>   
                </div>
             </div>
+        </form>
 
-    </div>    
+    </div>  
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'support/create_message.js' %}"></script>
+
+{% include "shop/product/include/button_in_cart_script.html" %}
+<script>
+
+    $(document).on('submit', '#create-message',function(e){
+    const user_name = "{{chat.user.first_name}}";
+    const url = "{% url 'support:create-message-ajax'%}";
+    const chat_id = "{{chat.id}}";
+  const text=$('#message-text').val();
+  send_message(url, chat_id, text, user_name);
+
+  return false;
+});
+
+</script>
 {% endblock %}
