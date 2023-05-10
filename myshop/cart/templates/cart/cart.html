@@ -1,9 +1,11 @@
 {% extends 'base_cart/base_cart.html' %} 
+{% load account_filters %}
+{% load static %}
 
 {% block title %}
     Simple shop: cart
 {% endblock %}
-{% load static %}
+
 
 
 {% block left_side %}
@@ -33,33 +35,30 @@
         <div class="col-2"><img class="img-fluid" 
             src="{{product.product.image_title.url}}"
             alt="{{product.product.name}}"></div>
-        <div class="col">
+        <div class="col-2">
             <div class="row text-muted">Shirt</div>
             <div class="row">{{product.product.name}}</div>
         </div>
-        <div class="col">
-            <form action="{% url 'cart:cart_add' product.product.id %}" method="post">
-                {{ product.update_quantity_form.quantity }}
-                {{ product.update_quantity_form.override }}
-                <input type='submit' value='Update'>
-                {% csrf_token %}
+        <div class="col-6">{{product.total_price}} ₽</div>
+        <div class="col m-2">
+            <form class="from" method="post" id="select-quantity-form-{{product.product.id}}">
+                <select class="form-select" name="quantity" id="cars">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
             </form>
         </div>
-        <div class="col">{{product.total_price}} ₽</div>
     </div>
-    <div>
-        <form action="{% url 'cart:cart_remove' product.product.id %}" method="post">
-            <button class="btn btn-danger" type="submit" value="Remove">
-            X
-          </button>
-            {% csrf_token %}
-          </form>
-          
 
-    </div>
+           
+              
+
 </div>
 {% endfor %}
 <!-- END Product_item -->
+
 {% endblock %}
 
 {% block right_side %}
@@ -80,4 +79,14 @@
     </a>
 {% endif %}
 
+{% endblock %}
+
+{% block favorite_products %}
+<div>
+    {% if favorite_products %}
+        {% for product in favorite_products %}
+            <h1>{{product.slug}}</h1>
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

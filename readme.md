@@ -27,7 +27,7 @@
 #TODO0 in future:
 <ul>
   <li>Refactor chats scroll</li>
-  <li>Refactor account views -> class</li>
+  <li>Refactor card change quantity</li>
 </ul>
 
 #TODO1 in future:
