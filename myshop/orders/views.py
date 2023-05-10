@@ -9,7 +9,7 @@ from .forms import OrderCreateForm
 from cart.cart import Cart
 from .models import OrderItem, Status
 from shop.models import Cupon
-
+from account.models import Account
 
 @login_required
 def order_create(request):
@@ -57,8 +57,10 @@ def order_create(request):
 @require_POST
 def set_coupon(request):
     coupon_code = request.POST.get("coupon_code")
-    coupon = Cupon.objects.filter(code=coupon_code, active=True).first()
+    # coupon = Cupon.objects.filter(code=coupon_code, active=True).first()
     # all_user_coupons = Account.objects.get(user=request.user).cupons
+    coupon = Account.objects.get(user=request.user).cupons.all().filter(code=coupon_code, active=True).first()
+
     result = False
     price_before_discount = None
     price_after_discount = None
