@@ -1,3 +1,5 @@
+from typing import Any
+from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from .models import Account
 from django.contrib.auth import authenticate, login, logout
@@ -8,88 +10,69 @@ from shop.models import Comment
 from orders.models import Order
 from cart.cart import Cart
 
-
-@login_required
-def my_account(request):
-    account = get_object_or_404(
-        Account.objects.prefetch_related("cupons").select_related("user"),
-        user=request.user,
-    )
-    orders = (
-        Order.objects.filter(customer=account)
-        .select_related("customer")
-        .prefetch_related("items__product")
-    )
-    cart = Cart(request)
-
-    return render(
-        request,
-        "account/my_account.html",
-        {"account": account, "orders": orders, "cart": cart},
-    )
+from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-@login_required
-def my_copons(request):
-    account = get_object_or_404(
-        Account.objects.prefetch_related("cupons").select_related("user"),
-        user=request.user,
-    )
-    cart = Cart(request)
+class AccountDetailViewMixin(LoginRequiredMixin, DetailView):
+    context_object_name = "account"
 
-    return render(
-        request,
-        "account/my_copons.html",
-        {"account": account, "cart": cart},
-    )
+    def get_object(self):
+        return get_object_or_404(
+            Account.objects.prefetch_related("cupons").select_related("user__account"),
+            user=self.request.user,
+        )
 
-
-@login_required
-def my_favorite_products(request):
-    account = get_object_or_404(
-        Account.objects.select_related("user"),
-        user=request.user,
-    )
-    favorite_products = account.favorite_products.all()
-    cart = Cart(request)
-    cart_products_with_quantity = cart.get_products_with_quantity()
-
-    return render(
-        request,
-        "account/my_favorite_products.html",
-        {
-            "account": account,
-            "favorite_products": favorite_products,
-            "cart": cart,
-            "cart_products_with_quantity": cart_products_with_quantity,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cart"] = Cart(self.request)
+        return context
 
 
-@login_required
-def my_reviews(request):
-    account = get_object_or_404(
-        Account.objects.select_related("user"),
-        user=request.user,
-    )
-    my_reviews = (
-        Comment.objects.filter(customer=request.user, active=True)
-        .select_related("product")
-        .select_related("customer")
-    )
-    cart = Cart(request)
-    cart_products_with_quantity = cart.get_products_with_quantity()
+class AccountDetailView(AccountDetailViewMixin):
+    template_name = "account/my_account.html"
 
-    return render(
-        request,
-        "account/my_reviews.html",
-        {
-            "account": account,
-            "my_reviews": my_reviews,
-            "cart": cart,
-            "cart_products_with_quantity": cart_products_with_quantity,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["orders"] = (
+            Order.objects.filter(customer=self.object)
+            .select_related("customer")
+            .prefetch_related("items__product")
+        )
+        return context
+
+
+class AccountCopons(AccountDetailViewMixin):
+    template_name = "account/my_copons.html"
+
+
+class AccountFavoriteProducts(AccountDetailViewMixin):
+    template_name = "account/my_favorite_products.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["favorite_products"] = self.object.favorite_products.all()
+        context["cart_products_with_quantity"] = Cart(
+            self.request
+        ).get_products_with_quantity()
+        return context
+
+
+class AccountReviews(AccountDetailViewMixin):
+    template_name = "account/my_reviews.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["my_reviews"] = (
+            Comment.objects.filter(customer=self.request.user, active=True)
+            .select_related("product")
+            .select_related("customer")
+        )
+        context["cart_products_with_quantity"] = Cart(
+            self.request
+        ).get_products_with_quantity()
+        return context
 
 
 def user_login(request):
