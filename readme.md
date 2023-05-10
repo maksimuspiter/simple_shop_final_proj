@@ -27,9 +27,7 @@
 #TODO0 in future:
 <ul>
   <li>Add all href in account templates</li>
-  <li>Refactor chats</li>
-  <li>Add chats form</li>
-  <li>Refactor messages (read_message)</li>
+  <li>Refactor chats scroll</li>
   <li>Add img in account</li>
 
 </ul>
@@ -38,7 +36,6 @@
 <ul>
   <li>Add favorite products in account and cart (before order) </li>
   <li>Add file to coomments </li>
-  <li>Add chat with support</li>
   <li>Add e-check</li>
 
 </ul>

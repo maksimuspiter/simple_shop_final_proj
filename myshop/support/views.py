@@ -1,4 +1,6 @@
 import json
+from typing import Any
+from django.db import models
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -35,6 +37,12 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        messages = self.object.messages.all()
+        for message in messages.filter(creator=Message.Creator.ADMIN):
+            message.viewed = True
+            message.save()
+
         chats = (
             Chat.objects.filter(user=self.request.user)
             .select_related("status")
@@ -47,7 +55,6 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
                 )
             )
         )
-        messages = self.object.messages.all()
         context["messages"] = messages
         context["chats"] = chats
         # context["form"] = self.request.user
