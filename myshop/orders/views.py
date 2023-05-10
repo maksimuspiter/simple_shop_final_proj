@@ -1,15 +1,17 @@
-from django.urls import reverse
-from django.shortcuts import render, redirect, HttpResponse
-from .forms import OrderCreateForm
-from cart.cart import Cart
-from .models import Order, OrderItem, Status
-from account.models import Account
-from shop.models import Cupon
-from django.views.decorators.http import require_POST
 import json
 from decimal import Decimal
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.shortcuts import render, redirect, HttpResponse
+
+from .forms import OrderCreateForm
+from cart.cart import Cart
+from .models import OrderItem, Status
+from shop.models import Cupon
 
 
+@login_required
 def order_create(request):
     cart = Cart(request)
     if request.method == "POST":
@@ -18,7 +20,9 @@ def order_create(request):
             order = form.save(commit=False)
             order.customer = request.user.account
             order.status = Status.objects.get(slug="sozdano")
-            order.total_price = cart.get_total_price_with_discount() + Decimal(order.delivery.price)
+            order.total_price = cart.get_total_price_with_discount() + Decimal(
+                order.delivery.price
+            )
             order.save()
 
             for item in cart:
@@ -28,7 +32,7 @@ def order_create(request):
                     price=item["total_price_with_discount"],
                     quantity=item["quantity"],
                 )
-            
+
             request.user.account.remove_cupon()
             cart.clear()
             return redirect(reverse("cart:cart_detail"))
