@@ -26,8 +26,8 @@
 
 #TODO0 in future:
 <ul>
-  <li>Add all href in account templates</li>
   <li>Refactor chats scroll</li>
+  <li>Refactor account views -> class</li>
 </ul>
 
 #TODO1 in future:

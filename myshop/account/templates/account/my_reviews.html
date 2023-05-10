@@ -1,0 +1,46 @@
+{% extends 'base_account/base_account.html' %} 
+{% load static %}
+
+{% block title %}
+    Отзывы
+{% endblock %}
+
+
+{% block content %}
+<h1 class="text-center">Мои отзывы</h1>
+
+{% if my_reviews %}
+
+<div class="container">
+    {% for comment in my_reviews%}
+        <div class="container border bg-light mb-2 row border border-1 border-success rounded">
+                <div  class="col-8">
+                    <p></p>{{comment.body}}</p>
+                </div>
+                <div class="col-2">
+                    <a href="{{comment.product.get_absolute_url}}">
+                        <img src="{{comment.product.image_title.url}}"
+                        alt="{{comment.product}}"
+                        width="50">
+                    </a>
+
+                </div>                
+                <div class="col-2 text-center">
+                    {% with rating=comment.product_score %}
+                        {% include "shop/product/include/product_stars.html" %}
+                    {% endwith %}
+                    <div>
+                        <span class="small mb-0 ms-2">{{comment.updated|date:"d M Y"}}</span>
+                    </div>
+                </div>
+
+
+        </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<span>У вас еще нет избранных товаров</span>
+{% endif %}
+{% endblock %}
+

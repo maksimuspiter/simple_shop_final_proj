@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, AccountEditForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from shop.models import Cupon
+from shop.models import Comment
 from orders.models import Order
 from cart.cart import Cart
 
@@ -60,6 +60,32 @@ def my_favorite_products(request):
         {
             "account": account,
             "favorite_products": favorite_products,
+            "cart": cart,
+            "cart_products_with_quantity": cart_products_with_quantity,
+        },
+    )
+
+
+@login_required
+def my_reviews(request):
+    account = get_object_or_404(
+        Account.objects.select_related("user"),
+        user=request.user,
+    )
+    my_reviews = (
+        Comment.objects.filter(customer=request.user, active=True)
+        .select_related("product")
+        .select_related("customer")
+    )
+    cart = Cart(request)
+    cart_products_with_quantity = cart.get_products_with_quantity()
+
+    return render(
+        request,
+        "account/my_reviews.html",
+        {
+            "account": account,
+            "my_reviews": my_reviews,
             "cart": cart,
             "cart_products_with_quantity": cart_products_with_quantity,
         },
