@@ -11,9 +11,11 @@
 
 {% if account.cupons.all %}
 <div class="container">
+
 <div class="row mx-2">
     {% for cupon in account.cupons.all %}
-    <div class="col-5 m-2 border border-info rounded">
+
+    <div class="col-5 p-0 m-2 bd-highlight border border-3 border-primary rounded">
         <div class="text-center bg-success text-white">
           <h5>{{cupon.code}}</h5>
           <p>Скидка: {{cupon.discount}}</p>

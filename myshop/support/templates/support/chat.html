@@ -1,24 +1,35 @@
 {% extends 'base_support/base_support.html' %} 
 
 {% block messages %}
-<h1>{{chat}}</h1>
+<div class="container pt-3 border border-3 border-secondary rounded" style="min-height: 400px;">
+
+    <div class="pb-2 text-center">
+        <h3>{{chat}}</h3>
+    </div>
 
     <div id="messages">
         {% for message in messages %}
-        
-            {% if message.creator == "U" %}
-                {% include "support/include/user_message.html" %}
+            <div class="mb-2 mt-1">
+                {% if message.creator == "U" %}
+                    {% include "support/include/user_message.html" %}
 
-            {% elif message.creator == "A" %}
-                {% include "support/include/admin_message.html" %}
-            {% endif %}
+                {% elif message.creator == "A" %}
+                    {% include "support/include/admin_message.html" %}
+                {% endif %}
+            </div>
         {% endfor %}
 
 
     </div>
-    <div id="dialog-window" class="form-outline pt-5">
+    <div id="dialog-window" class="form-outline mt-5">
         <textarea class="form-control mb-2" id="textAreaExample2" rows="2"></textarea>
-        <label class="form-label" for="textAreaExample2">Сообщение</label>
-        <button type="button" class="btn btn-info btn-rounded float-end">отправить</button>
-    </div>
+            <div class="row">
+                <div class="col"><span class="ps-5">Сообщение</span></div>
+               <div class="col">
+                    <button type="button" class="btn btn-info btn-rounded ">отправить</button>   
+               </div>
+            </div>
+
+    </div>    
+</div>
 {% endblock %}

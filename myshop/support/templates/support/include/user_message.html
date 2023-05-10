@@ -1,12 +1,20 @@
-<div id="admin-message" class="d-flex justify-content-between mb-4">
-    <div class="card w-100">
-        <div class="card-header d-flex justify-content-between p-3">
-            <span class="fw-bold mb-0">{{chat.user.first_name}}</span>
-        </div>
-        <div class="card-body">
-            <p class="mb-0">{{message.text}}</p>
-        </div>
-        </div>
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-        class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+<div class="card">
+  <div class="card-header row m-0">
+    <div class="col-10">
+      <span class="fw-bold">{{chat.user.first_name}}</span>
+    </div>
+
+    <div class="col-2">
+      <img
+        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+        alt="avatar"
+        class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+        width="40"
+      />
+    </div>
+  </div>
+
+  <div class="card-body">
+    <p>{{message.text}}</p>
+  </div>
 </div>
