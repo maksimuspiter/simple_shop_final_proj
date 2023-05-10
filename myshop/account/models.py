@@ -36,6 +36,10 @@ class Account(models.Model):
         related_name="accounts_activated",
     )
 
+    avatar_img = models.ImageField(
+        upload_to="account_avatar/title/%Y/%m/%d", blank=True
+    )
+
     class Meta:
         ordering = ["created"]
         indexes = [

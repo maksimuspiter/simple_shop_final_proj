@@ -28,8 +28,6 @@
 <ul>
   <li>Add all href in account templates</li>
   <li>Refactor chats scroll</li>
-  <li>Add img in account</li>
-
 </ul>
 
 #TODO1 in future:
