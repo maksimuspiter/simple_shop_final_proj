@@ -1,45 +1,14 @@
-from typing import Any
-from django.db import models
-from django.shortcuts import render, get_object_or_404
-from account.models import Account
-from django.contrib.auth.decorators import login_required
-from .models import Message, Chat
-from django.db.models import Count, Q, F
+import json
 from django.views.generic import ListView, DetailView
-
-# from shop.views import AllProductListView
-
-
-@login_required
-def my_messages(request):
-    # account = get_object_or_404(
-    #     Account.objects.select_related("user"),
-    #     user=request.user,
-    # )
-
-    chats = (
-        Chat.objects.filter(user=request.user)
-        .select_related("status")
-        .select_related("type")
-        .annotate(
-            unread=Count(
-                "messages",
-                filter=Q(messages__creator=Message.Creator.ADMIN)
-                & Q(messages__viewed=False),
-            )
-        )
-    )
-    return render(
-        request,
-        "support/chat_window.html",
-        {
-            # "account": account,
-            "chats": chats
-        },
-    )
+from django.views.decorators.http import require_POST
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, Q
+from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.urls import reverse
+from .models import Message, Chat
 
 
-class AllChatsListView(ListView):
+class AllChatsListView(LoginRequiredMixin, ListView):
     context_object_name = "chats"
     template_name = "support/all_chats.html"
 
@@ -59,7 +28,7 @@ class AllChatsListView(ListView):
         return queriset
 
 
-class ChatDetailView(DetailView):
+class ChatDetailView(LoginRequiredMixin, DetailView):
     model = Chat
     context_object_name = "chat"
     template_name = "support/chat.html"
@@ -81,5 +50,32 @@ class ChatDetailView(DetailView):
         messages = self.object.messages.all()
         context["messages"] = messages
         context["chats"] = chats
+        # context["form"] = self.request.user
 
         return context
+
+
+@require_POST
+def create_message_ajax(request):
+    result = None
+    error = None
+    chat_id = request.POST.get("chat_id", None)
+    text = request.POST.get("text", None)
+    print(request.POST)
+
+    if chat_id and text:
+        try:
+            result = True
+            chat = get_object_or_404(Chat, id=chat_id)
+            Message.objects.create(chat=chat, text=text, creator=Message.Creator.USER)
+
+        except Chat.DoesNotExist:
+            error = "This chat doesn not exite"
+
+    else:
+        error = "Invalid data"
+
+    return HttpResponse(
+        json.dumps({"result": result, "text": text, "error": error}),
+        content_type="application/json",
+    )
