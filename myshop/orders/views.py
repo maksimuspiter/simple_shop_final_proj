@@ -45,12 +45,17 @@ def order_create(request):
                 "email": request.user.email,
             }
         )
-
+    discount_value = cart.get_discount_value_float()
     activated_cupon = request.user.account.activated_cupon
     return render(
         request,
         "orders/order/create.html",
-        {"cart": cart, "form": form, "activated_cupon": activated_cupon},
+        {
+            "cart": cart,
+            "form": form,
+            "activated_cupon": activated_cupon,
+            "discount_value": discount_value,
+        },
     )
 
 
@@ -59,7 +64,8 @@ def set_coupon(request):
     coupon_code = request.POST.get("coupon_code")
 
     coupon = (
-        Account.objects.select_related("user").get(user=request.user)
+        Account.objects.select_related("user")
+        .get(user=request.user)
         .cupons.filter(code=coupon_code, active=True)
         .first()
     )
@@ -68,12 +74,14 @@ def set_coupon(request):
     error_message = None
     price_before_discount = None
     price_after_discount = None
+    discount_value = None
     if coupon:
         request.user.account.activated_cupon = coupon
         request.user.account.save()
         cart = Cart(request)
         cart.add_discount(coupon.discount)
         price_before_discount, price_after_discount = cart.full_price_info_for_cart()
+        discount_value = cart.get_discount_value_float()
         result = True
     else:
         error_message = "Купон не доступен"
@@ -86,6 +94,7 @@ def set_coupon(request):
                 "coupon_code": coupon_code,
                 "price_before_discount": price_before_discount,
                 "price_after_discount": price_after_discount,
+                "discount_value": discount_value,
             }
         ),
         content_type="application/json",

@@ -66,7 +66,8 @@ class Cart:
 
     def get_total_price(self):
         return sum(
-            Decimal(item["price"]) * int(item["quantity"]) for item in self.cart.values()
+            Decimal(item["price"]) * int(item["quantity"])
+            for item in self.cart.values()
         )
 
     def get_total_price_with_discount(self):
@@ -91,6 +92,10 @@ class Cart:
             item["discount"] = discount
         self.save()
 
+    def get_discount_value_float(self):
+        discount = self.get_total_price() - self.get_total_price_with_discount()
+        return "%.2f" % round(discount, 2)
+
     def get_products_with_quantity(self):
         product_ids_in_cart = self.get_products_ids()
         products_with_quantity = {}
@@ -105,9 +110,8 @@ class Cart:
 
     def get_product_sum_price_before_discount(self, product_id):
         if self.cart.get(str(product_id), None):
-            sum_price = (
-                float(self.cart[str(product_id)]["price"])
-                * float(self.cart[str(product_id)]["quantity"])
+            sum_price = float(self.cart[str(product_id)]["price"]) * float(
+                self.cart[str(product_id)]["quantity"]
             )
             return "%.2f" % round(sum_price, 2)
         return 0

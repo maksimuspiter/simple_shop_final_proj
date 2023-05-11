@@ -24,6 +24,7 @@
 <div class="row p-0 m-0 mb-4">
   <div class="col-5">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
   <div class="col-7" id="total_price_result_before_and_after_cupon">
+
     {% if activated_cupon %}
       <span><s>{{ cart.get_total_price }}</s></span><span> {{ cart.get_total_price_with_discount|floatformat:2}}</span>
     {% else %}
@@ -35,14 +36,20 @@
 
   <div class="mb-2" id="promocode_data">
     {% if activated_cupon %}
-      <span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">{{activated_cupon.code}}</span>
-      <div class="mt-2 mb-2">
-        <span>Скидка: <span id="discount_value"></span></span>
-      </div>
-    {% else %}
-      <span>Нет промокода</span>
-    {% endif %}  
-  </div>    
+      <span>Промокод применен: </span>
+      <span class="p-1 bg-success text-white rounded-pill">{{activated_cupon.code}}</span>
+    {% endif %}
+  </div> 
+  <div class="mt-2 mb-2" id="discount_value">
+      {% if discount_value %}<span>Скидка: </span><span>{{discount_value}}</span>
+      {% else %}<span>Нет промокода</span>
+      {% endif %}
+  </div>
+      
+        
+      
+     
+     
   
 <div class="mb-2" id="promocode_add_result"></div>
 

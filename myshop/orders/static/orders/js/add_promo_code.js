@@ -53,6 +53,9 @@ function change_price(
   total_price_result_before_and_after_cupon.innerHTML = `<span><s>${price_before_discount}</s></span><span> ${price_after_discount}</span>`;
   total_price_result.innerHTML = price_after_discount;
 }
+function change_discount_value(value) {
+  document.getElementById("discount_value").innerHTML = `<span>Скидка: </span><span>${value}</span>`;
+}
 
 function add_promo_code_ajax(
   url,
@@ -87,6 +90,7 @@ function add_promo_code_ajax(
           data.price_before_discount,
           data.price_after_discount
         );
+        change_discount_value(data.discount_value);
       } else {
         add_result_window(
           promocode_window_result_id,
