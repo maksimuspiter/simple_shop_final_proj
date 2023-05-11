@@ -121,3 +121,41 @@ def cart_change_ajax(request):
         ),
         content_type="application/json",
     )
+
+
+@require_POST
+def change_product_quantity_ajax(request):
+    result = False
+    quantity = None
+    total_price = None
+    product_total_price = None
+    cart_quantity = None
+    error = None
+
+    product_id = request.POST.get("product_id")
+    quantity = request.POST.get("quantity")
+
+    if product_id and quantity:
+        try:
+            cart = Cart(request)
+            product = get_object_or_404(Product, id=int(product_id))
+            cart.add(product, quantity=int(quantity), override_quantity=True)
+            result = True
+            total_price = "%.2f" % round(cart.get_total_price(), 2)
+            product_total_price = cart.get_product_sum_price_before_discount(product_id)
+            cart_quantity = len(cart)
+
+        except Exception as e:
+            error = e
+    return HttpResponse(
+        json.dumps(
+            {
+                "result": result,
+                "total_price": total_price,
+                "product_total_price": product_total_price,
+                "cart_quantity": cart_quantity,
+                "error": error,
+            }
+        ),
+        content_type="application/json",
+    )

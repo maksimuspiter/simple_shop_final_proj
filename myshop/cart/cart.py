@@ -25,12 +25,14 @@ class Cart:
 
         for item in cart.values():
             item["price"] = Decimal(item["price"])
-            item["total_price"] = item["price"] * item["quantity"]
-            item["total_price_with_discount"] = item["price"] * Decimal(1 - item["discount"]/100)
+            item["total_price"] = item["price"] * int(item["quantity"])
+            item["total_price_with_discount"] = item["price"] * Decimal(
+                1 - item["discount"] / 100
+            )
             yield item
 
     def __len__(self):
-        return sum(item["quantity"] for item in self.cart.values())
+        return sum(int(item["quantity"]) for item in self.cart.values())
 
     def add(self, product, quantity=1, override_quantity=False):
         product_id = str(product.id)
@@ -43,9 +45,9 @@ class Cart:
             }
 
         if override_quantity:
-            self.cart[product_id]["quantity"] = quantity
+            self.cart[product_id]["quantity"] = int(quantity)
         else:
-            self.cart[product_id]["quantity"] += quantity
+            self.cart[product_id]["quantity"] += int(quantity)
         self.save()
 
     def save(self):
@@ -64,7 +66,7 @@ class Cart:
 
     def get_total_price(self):
         return sum(
-            Decimal(item["price"]) * item["quantity"] for item in self.cart.values()
+            Decimal(item["price"]) * int(item["quantity"]) for item in self.cart.values()
         )
 
     def get_total_price_with_discount(self):
@@ -95,3 +97,17 @@ class Cart:
         for product_id in product_ids_in_cart:
             products_with_quantity[product_id] = self.get_product_quantity(product_id)
         return products_with_quantity
+
+    def full_price_info_for_cart(self):
+        price_before_discount = "%.2f" % round(self.get_total_price(), 2)
+        price_after_discount = "%.2f" % round(self.get_total_price_with_discount(), 2)
+        return price_before_discount, price_after_discount
+
+    def get_product_sum_price_before_discount(self, product_id):
+        if self.cart.get(str(product_id), None):
+            sum_price = (
+                float(self.cart[str(product_id)]["price"])
+                * float(self.cart[str(product_id)]["quantity"])
+            )
+            return "%.2f" % round(sum_price, 2)
+        return 0

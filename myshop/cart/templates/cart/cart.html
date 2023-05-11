@@ -1,5 +1,6 @@
 {% extends 'base_cart/base_cart.html' %} 
 {% load account_filters %}
+{% load cart_filters %}
 {% load static %}
 
 {% block title %}
@@ -11,53 +12,65 @@
 {% block left_side %}
 <div class="title">
     <div class="row">
-        
         <div class="col"><h4><b>Simple shop</b></h4></div>
         <!--Count_item -->
         <div class="col align-self-center text-right text-muted">
             {% if cart|length == 0 %}
                 Карзина пуста
-            {% else %}
-                Ваш заказ {{cart|length}} ед.
             {% endif %}
-            
         </div>
-        
-
-
     </div>
 </div>    
 
 <!-- Product_item -->
 {% for product in cart %}                    
-<div class="border-top border-bottom d-flex justify-content-between">
-    <div class="row main align-items-center">
-        <div class="col-2"><img class="img-fluid" 
-            src="{{product.product.image_title.url}}"
-            alt="{{product.product.name}}"></div>
-        <div class="col-2">
-            <div class="row text-muted">Shirt</div>
-            <div class="row">{{product.product.name}}</div>
-        </div>
-        <div class="col-6">{{product.total_price}} ₽</div>
-        <div class="col m-2">
-            <form class="from" method="post" id="select-quantity-form-{{product.product.id}}">
-                <select class="form-select" name="quantity" id="cars">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </form>
-        </div>
-    </div>
+<div class="border-top border-bottom">
+    <div class="row ms-2 me-2">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-4">
+                    <img class="img-fluid" src="{{product.product.image_title.url}}"
+                    alt="{{product.product.name}}" width="150">
+                </div>
 
-           
-              
+                <div class="col-4">
+                    <div class="row">{{product.product.name}}</div>
+                </div>
+                <div class="col-4" >
+                    <span id="product_sum_price-{{product.product.id}}">{{product.total_price}}</span><span> ₽</span>
+                </div>
+            </div>
 
+        </div>
+        
+        <div class="col-4" >
+            <select id="select-quantity-{{product.product.id}}" onchange="select_val(this.id, this.value)"
+                class="form-select form-select-lg mb-3">
+                {% for val in product.quantity|get_renge_from_quantity:5 %}
+                    <option value="{{val}}"
+                    {% if val == product.quantity %} selected="selected" {% endif %}
+                    >{{val}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div> 
 </div>
+
 {% endfor %}
-<!-- END Product_item -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'cart/js/change_quantity.js' %}"></script>
+<script>
+    function select_val(select_id, value){
+        const url = "{% url 'cart:quantity-change-ajax'%}";
+        const product_id = Number(select_id.slice(-1));
+        const product_price_id = "product_sum_price-" + product_id;
+        console.log(product_price_id);
+        change_quantity_ajax(url, product_id, value, product_price_id);
+    }
+
+</script>  
+
 
 {% endblock %}
 
@@ -66,9 +79,9 @@
 <hr>
 <div class="row">
     <!--Count_item -->
-    <div class="col" style="padding-left:0;">Товаров: {{cart|length}}</div>
+    <div class="col" style="padding-left:0;">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
     <!--Total_price -->
-    <div class="col text-right">{{ cart.get_total_price }}</div>
+    <div class="col text-right"><span id="cart_total_price">{{ cart.get_total_price }}</span></div>
 </div>
 {% if cart|length > 0%}
     <a href="{% url 'orders:order_create' %}">
@@ -89,4 +102,7 @@
         {% endfor %}
     {% endif %}
 </div>
+
+
+
 {% endblock %}
