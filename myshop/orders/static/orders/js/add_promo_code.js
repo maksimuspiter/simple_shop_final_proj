@@ -50,7 +50,7 @@ function change_price(
     total_price_result_second_id
   );
 
-  total_price_result_before_and_after_cupon.innerHTML = `<span><s>${price_before_discount}</s></span><span> ${price_after_discount}</span>`;
+  total_price_result_before_and_after_cupon.innerHTML = `<span>Цена: </span> <span><s>${price_before_discount}</s></span><span> ${price_after_discount}</span><span> ₽</span>`;
   total_price_result.innerHTML = price_after_discount;
 }
 function change_discount_value(value) {

@@ -58,9 +58,8 @@
 {% endblock %}
 
 {% block right_side %}
-<div class="row">
-    <div class="col">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
-    <div class="col"><span id="cart_total_price">{{ cart.get_total_price }}</span></div>
+<div>
+   <span>Цена:</span><span id="cart_total_price">{{ cart.get_total_price }}</span><span> ₽</span>
 </div>
 <div class="mt-3 text-center">
     {% if cart|length > 0%}
