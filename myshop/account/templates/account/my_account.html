@@ -12,11 +12,11 @@
     <h1 class="text-center">Hello {{account.user}}</h1>
     <h2>Заказы</h2>
     {% if orders%}
-    <div class="d-flex flex-column bd-highlight mb-3">
+    <div class="d-flex flex-column align-items-center bd-highlight mb-3">
         {% for order in orders %}  
-        <div class="my-2">
+        <div class="my-2 ">
 
-            <div class="p-2 bd-highlight border border-2 border-primary rounded">
+            <div class="p-2 bd-highlight border border-2 border-primary rounded" style="width: 750px;">
                 <div class="row">
                     <div class="col-8">
                         <span>Заказ от {{order.created}}</span>
