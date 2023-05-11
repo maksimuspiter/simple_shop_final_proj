@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, Optional
 from django.db import models
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
@@ -31,22 +31,26 @@ class AllChatsListView(LoginRequiredMixin, ListView):
 
 
 class ChatDetailView(LoginRequiredMixin, DetailView):
-    model = Chat
+    queryset = Chat.objects.all().select_related("user")
     context_object_name = "chat"
     template_name = "support/chat.html"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         messages = self.object.messages.all()
-        for message in messages.filter(creator=Message.Creator.ADMIN):
+        for message in messages.filter(creator=Message.Creator.ADMIN, viewed=False):
             message.viewed = True
             message.save()
 
         chats = (
             Chat.objects.filter(user=self.request.user)
-            .select_related("status")
             .select_related("type")
+            .prefetch_related("messages")
             .annotate(
                 unread=Count(
                     "messages",
@@ -57,7 +61,6 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
         )
         context["messages"] = messages
         context["chats"] = chats
-        # context["form"] = self.request.user
 
         return context
 
