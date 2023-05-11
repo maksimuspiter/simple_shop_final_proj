@@ -14,7 +14,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-function send_message(url, chat_id, text, user_name) {
+function send_message(url, chat_id, text, user_name, user_avatar_url) {
   $.ajax({
     url: url,
     type: "POST",
@@ -28,7 +28,7 @@ function send_message(url, chat_id, text, user_name) {
       console.log(data);
       if (data.result) {
         clear_form_input();
-        add_new_message(text, user_name);
+        add_new_message(text, user_name, user_avatar_url);
       } else {
         show_error();
       }
@@ -40,7 +40,7 @@ function send_message(url, chat_id, text, user_name) {
   });
 }
 
-function add_new_message(text, user_name) {
+function add_new_message(text, user_name, user_avatar_url) {
   let messages_div = document.getElementById("messages");
   messages_div.innerHTML += `<div class="card">
     <div class="card-header row m-0">
@@ -50,7 +50,7 @@ function add_new_message(text, user_name) {
   
       <div class="col-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+          src=${user_avatar_url}
           alt="avatar"
           class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
           width="40"
@@ -69,4 +69,6 @@ function clear_form_input() {
   form.reset();
 }
 
-function show_error() {}
+function show_error() {
+  console.log("error");
+}

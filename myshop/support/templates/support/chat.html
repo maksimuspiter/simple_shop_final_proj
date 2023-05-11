@@ -49,10 +49,18 @@ style="min-height: 400px;">
 
     $(document).on('submit', '#create-message',function(e){
     const user_name = "{{chat.user.first_name}}";
-    const url = "{% url 'support:create-message-ajax'%}";
+    const url = "{% url 'support:create-message-ajax'%}";    
+    
+    let user_avatar_url ;
+    if('{{chat.user.account.avatar_img}}'){
+        user_avatar_url="{{chat.user.account.avatar_img.url}}"
+    } else {
+        user_avatar_url ="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+    }
+
     const chat_id = "{{chat.id}}";
   const text=$('#message-text').val();
-  send_message(url, chat_id, text, user_name);
+  send_message(url, chat_id, text, user_name, user_avatar_url);
 
   return false;
 });
