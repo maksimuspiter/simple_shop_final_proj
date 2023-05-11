@@ -17,10 +17,6 @@ import json
 def cart_detail(request):
     cart = Cart(request)
 
-    # for item in cart:
-    #     item["update_quantity_form"] = CartAddProductForm(
-    #         initial={"quantity": item["quantity"], "override": True}
-    #     )
     cart_products_with_quantity = cart.get_products_with_quantity()
 
     account = Account.objects.prefetch_related("favorite_products").get(
