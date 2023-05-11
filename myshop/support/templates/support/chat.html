@@ -20,7 +20,7 @@ style="min-height: 400px;">
                 {% endif %}
             </div>
         {% endfor %}
-
+        <div id="end_messanger"></div>    
     </div>
 
     <div id="dialog-window" class="form-outline mt-5">
@@ -41,6 +41,12 @@ style="min-height: 400px;">
     </div>  
 </div>
 
+
+<script>
+    window.onload = function(){
+    document.getElementById('end_messanger').scrollIntoView(true);
+}
+</script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="{% static 'support/create_message.js' %}"></script>
 

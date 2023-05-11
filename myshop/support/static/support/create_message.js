@@ -29,6 +29,7 @@ function send_message(url, chat_id, text, user_name, user_avatar_url) {
       if (data.result) {
         clear_form_input();
         add_new_message(text, user_name, user_avatar_url);
+        scroll_to_end();
       } else {
         show_error();
       }
@@ -71,4 +72,7 @@ function clear_form_input() {
 
 function show_error() {
   console.log("error");
+}
+function scroll_to_end() {
+  document.getElementById("end_messanger").scrollIntoView(true);
 }
