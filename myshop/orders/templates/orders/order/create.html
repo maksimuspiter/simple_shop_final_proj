@@ -81,7 +81,12 @@
 $(document).on('submit', '#add_promocode_form_post',function(e){
   const url = "{% url 'orders:set_coupon' %}";
   const coupon_code=$('#user_promo_code').val();
-  add_promo_code(url, coupon_code, "promocode_data", "promocode_add_result", "total_price_result_before_and_after_cupon", "total_price_result");
+  const promocode_data_div_id = "promocode_data";
+  const add_result_window_id = "promocode_add_result";
+  const total_price_first_div_id ="total_price_result_before_and_after_cupon";
+  const total_price_bottom_div_id = "total_price_result";
+
+  add_promo_code_ajax(url, coupon_code, promocode_data_div_id, add_result_window_id, total_price_first_div_id, total_price_bottom_div_id);
   return false;
 });
 </script>

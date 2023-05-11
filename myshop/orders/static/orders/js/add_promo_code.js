@@ -13,12 +13,52 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+function add_result_window(result_div_id, acion, error_message) {
+  let promocode_add_result = document.getElementById(result_div_id);
+  let message;
+  let window_class;
+  switch (acion) {
+    case "success":
+      message = "Успешно добавлен";
+      window_class = "alert alert-success alert-dismissible fade show";
+      break;
+    case "error":
+      message = error_message;
+      window_class = "alert alert-warning alert-dismissible fade show";
+      break;
+  }
+  promocode_add_result.innerHTML = `<div class="${window_class}" role="alert">
+  <strong>${message}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>`;
+}
+function add_promocode_field(promocode_data_id, coupon_code) {
+  let promocode_field = document.getElementById(promocode_data_id);
 
-function add_promo_code(
+  promocode_field.innerHTML = `<span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">${coupon_code}</span>`;
+}
+function change_price(
+  total_price_result_first_id,
+  total_price_result_second_id,
+  price_before_discount,
+  price_after_discount
+) {
+  let total_price_result_before_and_after_cupon = document.getElementById(
+    total_price_result_first_id
+  );
+  let total_price_result = document.getElementById(
+    total_price_result_second_id
+  );
+
+  total_price_result_before_and_after_cupon.innerHTML = `<span><s>${price_before_discount}</s></span><span> ${price_after_discount}</span>`;
+  total_price_result.innerHTML = price_after_discount;
+}
+
+function add_promo_code_ajax(
   url,
   coupon_code,
   promocode_data_id,
-  promocode_add_result_id,
+  promocode_window_result_id,
   total_price_result_first,
   total_price_result_second
 ) {
@@ -33,35 +73,26 @@ function add_promo_code(
     },
     success: (data) => {
       console.log(data);
-      let result = data.result;
-      let coupon_code = data.coupon_code;
-      let promocode_add_result = document.getElementById(
-        promocode_add_result_id
-      );
-      let price_before_discount = data.price_before_discount;
-      let price_after_discount = data.price_after_discount;
-      let total_price_result_before_and_after_cupon = document.getElementById(
-        total_price_result_first
-      );
-      let total_price_result = document.getElementById(
-        total_price_result_second
-      );
-      let promocode_field = document.getElementById(promocode_data_id);
 
-      if (result) {
-        promocode_field.innerHTML = `<span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">${coupon_code}</span>`;
-        promocode_add_result.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong id="promocode_add_success">success!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>`;
-        total_price_result_before_and_after_cupon.innerHTML = `<span><s>${price_before_discount}</s></span><span> ${price_after_discount}</span>`;
-        total_price_result.innerHTML = price_after_discount;
+      if (data.result) {
+        add_promocode_field(promocode_data_id, data.coupon_code);
+        add_result_window(
+          promocode_window_result_id,
+          "success",
+          data.error_message
+        );
+        change_price(
+          total_price_result_first,
+          total_price_result_second,
+          data.price_before_discount,
+          data.price_after_discount
+        );
       } else {
-        promocode_add_result.innerHTML = `<span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">${coupon_code}</span>`;
-        promocode_add_result.innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Error!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>`;
+        add_result_window(
+          promocode_window_result_id,
+          "error",
+          data.error_message
+        );
       }
     },
 

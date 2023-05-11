@@ -57,11 +57,15 @@ def order_create(request):
 @require_POST
 def set_coupon(request):
     coupon_code = request.POST.get("coupon_code")
-    # coupon = Cupon.objects.filter(code=coupon_code, active=True).first()
-    # all_user_coupons = Account.objects.get(user=request.user).cupons
-    coupon = Account.objects.get(user=request.user).cupons.all().filter(code=coupon_code, active=True).first()
+
+    coupon = (
+        Account.objects.select_related("user").get(user=request.user)
+        .cupons.filter(code=coupon_code, active=True)
+        .first()
+    )
 
     result = False
+    error_message = None
     price_before_discount = None
     price_after_discount = None
     if coupon:
@@ -69,14 +73,16 @@ def set_coupon(request):
         request.user.account.save()
         cart = Cart(request)
         cart.add_discount(coupon.discount)
-        price_before_discount = "%.2f" % round(cart.get_total_price(), 2)
-        price_after_discount = "%.2f" % round(cart.get_total_price_with_discount(), 2)
+        price_before_discount, price_after_discount = cart.full_price_info_for_cart()
         result = True
+    else:
+        error_message = "Купон не доступен"
 
     return HttpResponse(
         json.dumps(
             {
                 "result": result,
+                "error_message": error_message,
                 "coupon_code": coupon_code,
                 "price_before_discount": price_before_discount,
                 "price_after_discount": price_after_discount,
