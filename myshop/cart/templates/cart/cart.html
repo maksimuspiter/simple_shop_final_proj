@@ -1,4 +1,5 @@
 {% extends 'base_cart/base_cart.html' %} 
+
 {% load account_filters %}
 {% load cart_filters %}
 {% load static %}
@@ -10,42 +11,24 @@
 
 
 {% block left_side %}
-<div class="title">
-    <div class="row">
-        <div class="col"><h4><b>Simple shop</b></h4></div>
-        <!--Count_item -->
-        <div class="col align-self-center text-right text-muted">
-            {% if cart|length == 0 %}
-                Карзина пуста
-            {% endif %}
-        </div>
-    </div>
-</div>    
 
-<!-- Product_item -->
 {% for product in cart %}                    
-<div class="border-top border-bottom">
-    <div class="row ms-2 me-2">
-        <div class="col-8">
-            <div class="row">
-                <div class="col-4">
-                    <img class="img-fluid" src="{{product.product.image_title.url}}"
-                    alt="{{product.product.name}}" width="150">
-                </div>
-
-                <div class="col-4">
-                    <div class="row">{{product.product.name}}</div>
-                </div>
-                <div class="col-4" >
-                    <span id="product_sum_price-{{product.product.id}}">{{product.total_price}}</span><span> ₽</span>
-                </div>
-            </div>
-
+<div class="p-2 border-bottom">
+    <div class="row">
+        <div class="col-3 text-center">
+            <img class="img-fluid rounded float-start" src="{{product.product.image_title.url}}"
+            alt="{{product.product.name}}">
         </div>
-        
-        <div class="col-4" >
+        <div class="col-5">
+            <div>{{product.product.name}}</div>
+            <div class="row p-0 m-0 float-start">
+                <button class="btn btn-link btn-sm">Удалить</button>
+            </div>
+        </div>
+        <div class="col-4 float-end">
+            <span id="product_sum_price-{{product.product.id}}">{{product.total_price}}</span><span> ₽</span>
             <select id="select-quantity-{{product.product.id}}" onchange="select_val(this.id, this.value)"
-                class="form-select form-select-lg mb-3">
+                class="form-select form-select-sm mb-3 float-end" style="max-width: 60px;">
                 {% for val in product.quantity|get_renge_from_quantity:5 %}
                     <option value="{{val}}"
                     {% if val == product.quantity %} selected="selected" {% endif %}
@@ -75,31 +58,40 @@
 {% endblock %}
 
 {% block right_side %}
-<div><h5><b>Итог</b></h5></div>
-<hr>
 <div class="row">
-    <!--Count_item -->
-    <div class="col" style="padding-left:0;">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
-    <!--Total_price -->
-    <div class="col text-right"><span id="cart_total_price">{{ cart.get_total_price }}</span></div>
+    <div class="col">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
+    <div class="col"><span id="cart_total_price">{{ cart.get_total_price }}</span></div>
 </div>
-{% if cart|length > 0%}
-    <a href="{% url 'orders:order_create' %}">
-        <button class="btn_cart btn-outline-dark flex-shrink-0" type="submit" value="Create order">
-            <i class="bi-cart-fill me-1"></i>
-            Оформить заказ
-        </button>
-    </a>
-{% endif %}
-
-{% endblock %}
+<div class="mt-3 text-center">
+    {% if cart|length > 0%}
+        <form action="{% url 'orders:order_create' %}">
+            <button class="btn btn-outline-dark flex-shrink-0" type="submit"  value="Create order">
+                <i class="bi-cart-fill me-1"></i>
+                Оформить заказ
+            </button>
+        </form>
+    {% endif %}
+    {% endblock %}
+</div>
 
 {% block favorite_products %}
-<div>
+<div class="mt-3 mb-3">
     {% if favorite_products %}
+    <h4 class="text-center">Похожие товары</h4>
+    <div class="row">
         {% for product in favorite_products %}
-            <h1>{{product.slug}}</h1>
+            <div class="col">
+                <div class="p-0 m-0 border">
+                    <a href="{{product.get_absolute_url}}">
+                        <img class="img-fluid rounded float-start p-2" src="{{product.image_title.url}}" 
+                        alt="{{product.name}}">
+                        </a>
+                    <h5 class="text-center">{{product.price}}</h5>
+                </div>
+            </div>
+            
         {% endfor %}
+    </div>
     {% endif %}
 </div>
 

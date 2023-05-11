@@ -4,53 +4,47 @@
 
 {% block left_side %}
 
-
-<form action="" method="post">
+<form method="post">
   {% csrf_token %} {% for field in form %}
   <div class="form-group">
     {{ field.errors }} {{ field.label_tag }} {{ field }}
   </div>
   {% endfor %}
-
-    <button class="btn_cart btn-outline-dark flex-shrink-0" type="submit" value="Submit">
-      <i class="bi-cart-fill me-1"></i>
-      Оформить
-  </button>
+  <div class="text-center">
+    <button class="btn btn-dark btn-lg" type="submit" value="Submit">
+        <i class="bi-cart-fill me-1"></i>
+        Оформить
+    </button>
+  </div>
 </form>
 
 {% endblock %} 
 
 {% block right_side %}
-<div><h5><b>Итог</b></h5></div>
-<hr>
-<div class="row ">
-    <!--Count_item -->
-    <div class="col-5" style="padding-left:0;">Товаров: {{cart|length}}</div>
-    <!--Total_price -->
-    <div class="col-7 text-right" id="total_price_result_before_and_after_cupon">
-      {% if activated_cupon %}
-        <span><s>{{ cart.get_total_price }}</s></span><span> {{ cart.get_total_price_with_discount|floatformat:2}}</span>
-      {% else %}
-        <span>{{ cart.get_total_price }}</span>
-      {% endif %}  
-
-      </div>
+<div class="row p-0 m-0 mb-4">
+  <div class="col-5">Товаров: <span id="cart_quantity">{{cart|length}}</span></div>
+  <div class="col-7" id="total_price_result_before_and_after_cupon">
+    {% if activated_cupon %}
+      <span><s>{{ cart.get_total_price }}</s></span><span> {{ cart.get_total_price_with_discount|floatformat:2}}</span>
+    {% else %}
+      <span>{{ cart.get_total_price }}</span>
+    {% endif %}  
+    </div>
 </div>
-
 {% if cart|length > 0%}
 
-  <div class="mt-2" id="promocode_data">
+  <div class="mb-2" id="promocode_data">
     {% if activated_cupon %}
       <span>Промокод применен: </span> <span class="p-1 bg-success text-white rounded-pill">{{activated_cupon.code}}</span>
-      <div>
-        <span>Скидка: </span>
+      <div class="mt-2 mb-2">
+        <span>Скидка: <span id="discount_value"></span></span>
       </div>
     {% else %}
       <span>Нет промокода</span>
     {% endif %}  
   </div>    
   
-<div id="promocode_add_result"></div>
+<div class="mb-2" id="promocode_add_result"></div>
 
 <form id="add_promocode_form_post" method="post">
   {% csrf_token %}
@@ -59,9 +53,8 @@
       <button class="btn btn-outline-success btn-sm" type="submit">Применить</button> 
     </div>
 </form> 
-<!--Total_price -->
-
-<div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+<hr>
+<div class="row mt-3">
     <div class="col">Общая цена</div>
 
     {% if activated_cupon %}
@@ -73,10 +66,8 @@
 </div>
 {% endif %}
 
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="{% static 'orders/js/add_promo_code.js' %}"></script>
-
 <script>
 $(document).on('submit', '#add_promocode_form_post',function(e){
   const url = "{% url 'orders:set_coupon' %}";
