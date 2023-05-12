@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "shop",
     "cart",
+    "compare",
     "orders",
     "account",
     "support",
@@ -139,6 +140,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CART_SESSION_ID = "cart"
+COMPARE_SESSION_ID = "compare"
 
 LOGIN_URL = "account:my_account-login"
 LOGOUT_URL = "account:my_account-logout"

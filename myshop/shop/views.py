@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count, Q
 from .models import Category, Product, ProductImageItem, Tag, Comment, CommentImage
 from cart.cart import Cart
+from compare.compare import Compare
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
 from .forms import ReviewForm, CommentImageFormSet, CommentImageForm
@@ -35,7 +36,9 @@ class AllProductListView(ListView):
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
         product_ids_in_cart = Cart(self.request).get_products_ids()
-
+        compare_len = len(Compare(self.request))
+        print('views', compare_len)
+        context["compare_len"] = compare_len
         context["categories"] = categories
         context["product_ids_in_cart"] = product_ids_in_cart
         context["cart_products_with_quantity"] = Cart(
