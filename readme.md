@@ -37,9 +37,9 @@
 #TODO1:
 
 <ul>
-  <li>Add file to coomments</li>
+  <li>Refactor comment --> hide forms</li>
   <li>Add e-check</li>
-  <li>Add product comparison</li>
+  <li>Refactor product comparison</li>
 
 </ul>
 
