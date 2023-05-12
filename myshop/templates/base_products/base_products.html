@@ -41,7 +41,7 @@
 
                     </ul>
                     <!-- CART -->
-                        <a href="{% url 'cart:cart_detail'%}">
+                    <a href="{% url 'cart:cart_detail'%}">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
@@ -49,7 +49,12 @@
                                 {{cart|length}}
                             </span>
                         </button>
-                    </a>
+                    </a>                    
+                    <!-- COMPARISON -->
+                    <a href="#">
+                    <button class="btn btn-outline-primary" type="submit">Список сравнения
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="product_in_cart_quantity_navbar">{{compare_len}}</span>
+                    </button></a>
                     <form action="" method="GET" class="form-inline my-2 my-lg-0">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="text">Search</button>
