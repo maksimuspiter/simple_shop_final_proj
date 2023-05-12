@@ -1,26 +1,38 @@
+{% load static %} 
+
 {% for comment in product_comments%}
-<div class="container border bg-light">
-
+<div class="container m-2 border border-2 bg-light">
     <div class="row">
+        <div  class="col-2">
+            <div>
+                <img 
+                    {% if comment.customer.account.avatar_img.url %} src="{{comment.customer.account.avatar_img.url}}"
+                    {% else %} src="{% static 'base_support/img/user_standart_avatar.png' %}"
+                    {% endif %}
+                alt="avatar"
+                class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+                width="40">
+            </div>
+            <div>
+                <p class="small">{{comment.customer.first_name}}</p>
+            </div>
+        </div>
 
-        <div  class="col">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).webp"
-            alt="avatar" 
-            width="25"
-            height="25">
-            <span class="small mb-0 ms-2">{{comment.customer.user}}</span>
+        <div class="col-8 d-flex align-items-center">
+            <p class="small">{{comment.body}}</p>
         </div>
-        <div class="col">
-            <span class="small mb-0 ms-2">{{comment.updated|date:"d M Y"}}</span>
+
+        <div class="col-2">
+            <div>
+                {% with rating=comment.product_score %}
+                    {% include "shop/product/include/product_stars.html" %}
+                {% endwith %}  
+            </div>
+            <div class="text-center">                
+                <span class="small mb-0 ms-2">{{comment.updated|date:"d M Y"}}</span>
+            </div>
+
         </div>
-        <div class="col">
-            {% with rating=comment.product_score %}
-                {% include "shop/product/include/product_stars.html" %}
-            {% endwith %}
-        </div>
-    </div>
-    <div class="px-2">
-        <p>{{comment.body}}</p>
     </div>
 </div>
 

@@ -1,3 +1,4 @@
+{% load static %} 
 <div class="card">
   <div class="card-header row m-0">
     <div class="col-10">
@@ -9,7 +10,7 @@
       {% if chat.user.account.avatar_img %}
         src="{{chat.user.account.avatar_img.url}}"
       {% else %}
-        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+        src="{% static 'base_support/img/user_standart_avatar.png' %}"
       {% endif %}
         alt="avatar"
         class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
