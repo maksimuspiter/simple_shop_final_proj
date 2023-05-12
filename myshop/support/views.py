@@ -41,17 +41,16 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        messages = self.object.messages.all()
-        first_unread_message = messages.filter(
-            viewed=False, creator=Message.Creator.ADMIN
-        ).first()
 
-        if first_unread_message:
-            old_messages = messages.filter(created__lt=first_unread_message.created)
-            unread_messages = messages.filter(created__gte=first_unread_message.created)
-        else:
-            old_messages = messages
-            unread_messages = None
+        messages = self.object.messages.all()
+        old_messages = messages
+        unread_messages = None
+        unread_message_quantity = len(
+            messages.filter(viewed=False, creator=Message.Creator.ADMIN)
+        )
+        if unread_message_quantity:
+            old_messages = messages[: len(messages) - unread_message_quantity]
+            unread_messages = messages[len(messages) - unread_message_quantity :]
 
         chats = (
             Chat.objects.filter(user=self.request.user)
@@ -65,7 +64,6 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
                 )
             )
         )
-        # context["messages"] = messages
         context["old_messages"] = old_messages
         context["unread_messages"] = unread_messages
         context["chats"] = chats
