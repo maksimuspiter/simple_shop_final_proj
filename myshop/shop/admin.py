@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Category, Product, ProductImageItem, Comment, Tag, Cupon
+from .models import (
+    Category,
+    Product,
+    ProductImageItem,
+    Comment,
+    Tag,
+    Cupon,
+    CommentImage,
+)
 
 
 @admin.register(Category)
@@ -37,9 +45,16 @@ class ProductImageItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class CommentImgInline(admin.TabularInline):
+    model = CommentImage
+    raw_id_fields = ["comment"]
+    extra = 1
+
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["product", "customer", "body", "created", "updated", "active"]
+    inlines = [CommentImgInline]
 
 
 @admin.register(Cupon)

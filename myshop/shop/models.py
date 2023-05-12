@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -131,6 +132,28 @@ class Comment(models.Model):
         ordering = ["created"]
         indexes = [
             models.Index(fields=["created"]),
+        ]
+        verbose_name = "Отзыв о товаре"
+        verbose_name_plural = "Отзывы о товаре"
+
+
+class CommentImage(models.Model):
+    comment = models.ForeignKey(
+        Comment,
+        related_name="images",
+        on_delete=models.CASCADE,
+        verbose_name="Комментарий",
+    )
+    image = models.ImageField(
+        upload_to="comment_img/%Y/%m/%d", blank=True, verbose_name="Фото"
+    )
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    class Meta:
+        ordering = ["created"]
+        indexes = [
+            models.Index(fields=["created"]),
+            models.Index(fields=["comment"]),
         ]
         verbose_name = "Отзыв о товаре"
         verbose_name_plural = "Отзывы о товаре"
