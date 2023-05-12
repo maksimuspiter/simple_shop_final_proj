@@ -1,8 +1,8 @@
 from django import forms
-from .models import Comment
+from .models import Comment, CommentImage
 
 
-class UserRegistrationForm(forms.ModelForm):
+class ReviewForm(forms.ModelForm):
     advantages = forms.CharField(
         widget=forms.Textarea(
             attrs={"cols": "60", "rows": "1", "placeholder": "Достоинства"}
@@ -33,3 +33,18 @@ class UserRegistrationForm(forms.ModelForm):
         labels = {
             "product_score": "Оцените покупку",
         }
+
+
+class CommentImageForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["image"].widget.attrs.update(
+            {"class": "form-control form-control-sm"}
+        )
+
+    class Meta:
+        model = CommentImage
+        fields = ["image"]
+
+
+CommentImageFormSet = forms.formset_factory(CommentImageForm, extra=3)

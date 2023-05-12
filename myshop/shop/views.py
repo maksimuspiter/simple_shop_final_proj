@@ -2,11 +2,11 @@ from typing import Any
 from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count, Q
-from .models import Category, Product, ProductImageItem, Tag, Comment
+from .models import Category, Product, ProductImageItem, Tag, Comment, CommentImage
 from cart.cart import Cart
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
-from .forms import UserRegistrationForm
+from .forms import ReviewForm, CommentImageFormSet, CommentImageForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -102,22 +102,31 @@ def product_detail(request, id, slug):
 def create_review(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
+        form = ReviewForm(data=request.POST)
+        form_img = CommentImageFormSet(request.POST, request.FILES)
+
+        if form.is_valid() and form_img.is_valid():
             cd = form.cleaned_data
+            imges = form_img.cleaned_data
+
             body = f"Достоинства: {cd['advantages']}.\nНедостатки: {cd['disadvantages']}.\nКомментарий: {cd['comment']}"
-            Comment.objects.create(
+            comment = Comment.objects.create(
                 product=product,
                 customer=request.user,
                 body=body,
                 product_score=cd["product_score"],
             )
+            for image in imges:
+                if image.get("image"):
+                    CommentImage.objects.create(comment=comment, image=image["image"])
             product.update_product_rating()
             return redirect("account:my_account")
 
     else:
-        form = UserRegistrationForm()
-
+        form = ReviewForm()
+        form_img = CommentImageFormSet()
     return render(
-        request, "shop/comment/create.html", {"form": form, "product": product}
+        request,
+        "shop/comment/create.html",
+        {"form": form, "product": product, "form_img": form_img},
     )
