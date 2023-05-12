@@ -38,7 +38,9 @@ class AllProductListView(ListView):
 
         context["categories"] = categories
         context["product_ids_in_cart"] = product_ids_in_cart
-        context["cart_products_with_quantity"] = Cart(self.request).get_products_with_quantity()
+        context["cart_products_with_quantity"] = Cart(
+            self.request
+        ).get_products_with_quantity()
         return context
 
 
@@ -67,14 +69,16 @@ class ProductsByTag(AllProductListView):
 
 def product_detail(request, id, slug):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    product = get_object_or_404(
+        Product.objects.prefetch_related("tags"), id=id, slug=slug, available=True
+    )
     categories = Category.objects.all()
 
     product_slider_img = ProductImageItem.objects.filter(product=product)
     products_in_cart_quantity = cart.get_product_quantity(product.id)
 
     # related_products = Product.objects.filter(available=True, category=product.category)
-    product_comments = product.comments.all()[:10]
+    product_comments = product.comments.all().select_related("customer__account")[:10]
     related_products = Product.objects.all().order_by("category")
 
     return render(
