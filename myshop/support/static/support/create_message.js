@@ -76,3 +76,26 @@ function show_error() {
 function scroll_to_end() {
   document.getElementById("end_messanger").scrollIntoView(true);
 }
+
+function read_all_messages(url, chat_id) {
+  $.ajax({
+    url: url,
+    type: "POST",
+    data: jQuery.param({ chat_id: chat_id }),
+    dataType: "json",
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    success: (data) => {
+      console.log(data);
+      if (data.result) {
+        document.getElementById("chat-unread-" + chat_id).innerHTML = 0;
+      }
+    },
+
+    error: (error) => {
+      console.log(error);
+    },
+  });
+}

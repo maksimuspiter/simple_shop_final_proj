@@ -67,6 +67,7 @@ class ChatDetailView(LoginRequiredMixin, DetailView):
         context["old_messages"] = old_messages
         context["unread_messages"] = unread_messages
         context["chats"] = chats
+        context["chat_id"] = self.object.id
 
         return context
 
@@ -93,5 +94,27 @@ def create_message_ajax(request):
 
     return HttpResponse(
         json.dumps({"result": result, "text": text, "error": error}),
+        content_type="application/json",
+    )
+
+
+@require_POST
+def read_message(request):
+    result = None
+    error = None
+    chat_id = request.POST.get("chat_id", None)
+
+    if chat_id:
+        try:
+            result = True
+            chat = get_object_or_404(Chat, id=chat_id)
+            for message in chat.messages.filter(creator="A", viewed=False):
+                message.viewed = True
+                message.save()
+        except Message.DoesNotExist:
+            error = "Message does not exist"
+
+    return HttpResponse(
+        json.dumps({"result": result, "error": error}),
         content_type="application/json",
     )

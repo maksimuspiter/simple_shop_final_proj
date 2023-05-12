@@ -1,75 +1,136 @@
 {% extends 'base_support/base_support.html' %} 
-{% load static %}
-
+{% load static %} 
 {% block messages %}
-<div class="container pt-3 border border-3 border-secondary rounded" 
-style="min-height: 400px;">
+<div
+  class="container pt-3 border border-3 border-secondary rounded"
+  style="min-height: 400px"
+>
+  <div class="pb-2 text-center">
+    <h3>{{chat.type}}</h3>
+  </div>
 
-    <div class="pb-2 text-center">
-        <h3>{{chat.type}}</h3>
+  <div id="messages" class="overflow-auto" style="max-height: 300px">
+    {% for message in old_messages %}
+    <div class="mb-2 mt-1">
+      {% if message.creator == "U" %} {% include "support/include/user_message.html" %} 
+      {% elif message.creator == "A" %}{% include "support/include/admin_message.html" %}
+    {% endif %}
     </div>
+    {% endfor %} 
+    
+    {% if unread_messages%}
+        <div class="mt-5 mb-5" id="end_messanger">
+            <hr>
+            <h5 class="text-center">Непрочитанные сообщения</h5>
+            <hr>
+        </div>
+        {% for message in unread_messages %}
 
-    <div id="messages" class="overflow-auto" style="max-height: 300px;">
-        {% for message in messages %}
             <div class="mb-2 mt-1">
-                {% if message.creator == "U" %}
+                {% if message.creator == "U" %} 
                     {% include "support/include/user_message.html" %}
-
                 {% elif message.creator == "A" %}
-                    {% include "support/include/admin_message.html" %}
+                    <div class="unread_message" id="{{message.pk}}">
+                        {% include "support/include/admin_message.html" %}
+                    </div>
                 {% endif %}
             </div>
         {% endfor %}
-        <div id="end_messanger"></div>    
-    </div>
 
-    <div id="dialog-window" class="form-outline mt-5">
-        <form id="create-message" method="post">
-            {% csrf_token %}
-            <textarea id="message-text" class="form-control mb-2" rows="2"></textarea>
-            <div class="row">
+        <div class="mt-5 mb-5 end_unread_messages">
+            <hr>
+        </div> 
+        
+    {% else %}
+        <div class="mt-5 mb-5" id="end_messanger"><hr></div>
+    {% endif %}
+  </div>
 
-                <div class="col">
-                    <span class="ps-5">Сообщение</span>
-                </div>
-               <div class="col">
-                    <button type="submit" class="btn btn-info btn-rounded ">отправить</button>   
-               </div>
-            </div>
-        </form>
-
-    </div>  
+  <div id="dialog-window" class="form-outline mt-5">
+    <form id="create-message" method="post">
+      {% csrf_token %}
+      <textarea id="message-text" class="form-control mb-2" rows="2"></textarea>
+      <div class="row">
+        <div class="col">
+          <span class="ps-5">Сообщение</span>
+        </div>
+        <div class="col">
+          <button type="submit" class="btn btn-info btn-rounded">
+            отправить
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
-
-<script>
-    window.onload = function(){
-    document.getElementById('end_messanger').scrollIntoView(true);
-}
-</script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="{% static 'support/create_message.js' %}"></script>
 
-{% include "shop/product/include/button_in_cart_script.html" %}
 <script>
-
-    $(document).on('submit', '#create-message',function(e){
-    const user_name = "{{chat.user.first_name}}";
-    const url = "{% url 'support:create-message-ajax'%}";    
-    
-    let user_avatar_url ;
-    if('{{chat.user.account.avatar_img}}'){
-        user_avatar_url="{{chat.user.account.avatar_img.url}}"
-    } else {
-        user_avatar_url ="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-    }
-
-    const chat_id = "{{chat.id}}";
-  const text=$('#message-text').val();
-  send_message(url, chat_id, text, user_name, user_avatar_url);
-
-  return false;
-});
-
+  document.getElementById("end_messanger").scrollIntoView(true);
 </script>
+
+{% if unread_messages %}
+
+<script>
+    window.onload = () => {
+      const url_read = "{% url 'support:read-message-ajax'%}";
+  
+    //   function change_element(element) {
+    //     console.log(element);
+    //     console.log(element.id);
+    //     element.classList.add("border", "border-3", "border-primary");
+    //   }
+  
+      function send_ajax(element) {
+        const chat_id = "{{chat_id}}";
+        read_all_messages(url_read, chat_id);
+      }
+      const options = {
+        root: document.getElementById("messages"),
+        rootMargin: "0px",
+        threshold: 1,
+      };
+  
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const object = entry.target;
+            // change_element(object);
+            send_ajax(object);
+            observer.unobserve(object);
+          }
+        });
+      }, options);
+  
+      const arr = document.querySelectorAll("div.end_unread_messages");
+      arr.forEach((i) => {
+        observer.observe(i);
+      });
+    };
+  </script>
+
+
+{% endif %}
+<script>
+    $(document).on("submit", "#create-message", function (e) {
+      const user_name = "{{chat.user.first_name}}";
+      const url = "{% url 'support:create-message-ajax'%}";
+  
+      let user_avatar_url;
+      if ("{{chat.user.account.avatar_img}}") {
+        user_avatar_url = "{{chat.user.account.avatar_img.url}}";
+      } else {
+        user_avatar_url =
+          "https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp";
+      }
+  
+      const chat_id = "{{chat.id}}";
+      const text = $("#message-text").val();
+      send_message(url, chat_id, text, user_name, user_avatar_url);
+  
+      return false;
+    });
+  </script>
 {% endblock %}
