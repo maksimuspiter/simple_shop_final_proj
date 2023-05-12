@@ -36,13 +36,17 @@
         </div>
         <div class="container col-4" id="right-side" style="background-color:#b2bdc6">
             <div class="mt-3">
-                <div class="row mt-5">
-                    <div class="col-4">
+                <div class="mt-5">
+
                         <h5><b>Итог</b></h5>
-                    </div>
-                    <div class="col-8">
-                        Товаров: <span id="cart_quantity">{{cart|length}}</span><span> шт.</span>
-                    </div>
+
+                        <div>
+                            Товаров: <span id="cart_quantity">{{cart|length}}</span><span> шт.</span>
+                        </div> 
+                        <div>
+                            {% block total_price %}
+                            {% endblock %}
+                        </div>
                 </div>
                 <hr>
                 {% block right_side %}

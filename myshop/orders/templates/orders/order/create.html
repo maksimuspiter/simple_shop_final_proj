@@ -20,14 +20,15 @@
 
 {% endblock %} 
 
-{% block right_side %}
-<div class="p-0 m-0 mb-4 p-0" id="total_price_result_before_and_after_cupon">
+{% block total_price %}
     {% if activated_cupon %}
     <span>Цена: </span><span><s>{{ cart.get_total_price }}</s></span><span> {{ cart.get_total_price_with_discount|floatformat:2}}</span><span><span> ₽</span>
     {% else %}
       <span>{{ cart.get_total_price }}</span>
     {% endif %}  
-</div>
+{% endblock %}
+
+{% block right_side %}
 {% if cart|length > 0%}
 
   <div class="mb-2" id="promocode_data">
