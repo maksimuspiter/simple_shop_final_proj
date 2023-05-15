@@ -48,9 +48,11 @@
                         </button>
                         </a></li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{% url 'compare:list-of-compare'%}">
                             <button class="btn btn-outline-primary" type="submit">Список сравнения
-                                <span class="badge bg-dark text-white ms-1 rounded-pill" id="product_in_compare_quantity_navbar">{{compare|length}}</span>
+                                <span class="badge bg-dark text-white ms-1 rounded-pill" id="product_in_compare_quantity_navbar">
+                                    {{compare|length}}
+                                </span>
                             </button>
                             </a>
                         </li>

@@ -3,7 +3,7 @@ from compare.compare import Compare
 from shop.models import Product
 from django.views.decorators.http import require_POST
 import json
-
+from django.views.generic import ListView
 
 @require_POST
 def in_compare(request):
@@ -37,3 +37,12 @@ def in_compare(request):
         ),
         content_type="application/json",
     )
+
+class ListOfComparesListView(ListView):
+    context_object_name = "products"
+    template_name = "compare/list_of_compare.html"
+
+    def get_queryset(self, **kwargs):
+        compare = Compare(self.request)
+        queriset = Product.objects.filter(id__in=compare.get_all_products()).prefetch_related("tags").select_related("category")
+        return queriset

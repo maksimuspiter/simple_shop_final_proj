@@ -1,0 +1,70 @@
+{% extends 'base_products/base_products.html' %} 
+{% load static %}
+
+{% block title %}
+    Сравнение товаров
+{% endblock %}
+
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Цена</th>
+        <th scope="col">Цена без скидки</th>
+        <th scope="col">Описание</th>
+        <th scope="col">Рейтинг</th>
+      </tr>
+    </thead>
+            <h3>{{product}}</h3>
+
+    <tbody>
+
+        {% for product in products %}
+            <tr>
+                <td>{{product.price}}</td>
+                <td>{{product.price_old}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.rating}}</td>
+            </tr>
+        {% endfor %}  
+    </tbody>
+  </table>
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+            <div class="col">
+                <h3>{{product.name}}</h3>
+            </div>
+        {% endfor %}  
+    </div>
+    <hr>
+    <div class="row">
+        {% for product in products %}
+            <div class="col">
+                <h3>{{product.price}} ₽</h3>
+            </div>
+        {% endfor %}  
+    </div>
+    <div class="row">
+        {% for product in products %}
+            <div class="col">
+                <p>{{product.description}} </p>
+            </div>
+        {% endfor %}  
+    </div>
+    <div class="row">
+        {% for product in products %}
+            <div class="col">
+                <p>{{product.rating}} </p>
+            </div>
+        {% endfor %}  
+    </div>
+
+</div>
+<div class="row">
+
+</div>
+
+
+{% endblock content %}
