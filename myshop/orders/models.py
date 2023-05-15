@@ -53,7 +53,7 @@ class Order(models.Model):
     )
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)
     delivery = models.ForeignKey(
-        Delivery, on_delete=models.SET_NULL, null=True, blank=True
+        Delivery, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="доставка"
     )
 
     class Meta:
