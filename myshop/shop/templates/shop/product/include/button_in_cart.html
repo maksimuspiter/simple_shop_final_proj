@@ -1,12 +1,11 @@
+{% load account_filters %}
 <div class="d-flex align-items-center" id="buttons-group-product-{{product.id}}">
-
-  {% if products_in_cart_quantity > 0 %}
-
+  {% if product.id in cart.get_products_ids %}
   <button class="btn btn-outline-primary btn-sm" onclick="remove_in_cart('{{product.id}}')">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="x5-e"><path fill="currentColor" d="M5 11a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5Z"></path></svg>
   </button>
 
-  <span id="product-in-cart-quantity-{{product.id}}">{{products_in_cart_quantity}} шт.</span>
+  <span id="product-in-cart-quantity-{{product.id}}">{{cart.get_products_with_quantity|get_item:product.id}} шт.</span>
 
   <button class="btn btn-outline-primary btn-sm" onclick="add_in_cart('{{product.id}}')">
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="x5-e"><path fill="currentColor" d="M12 4a1 1 0 0 0-1 1v6H5a1 1 0 1 0 0 2h6v6a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2h-6V5a1 1 0 0 0-1-1Z"></path></svg>

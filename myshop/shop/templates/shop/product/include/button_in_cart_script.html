@@ -1,12 +1,12 @@
 {% load static %}
 
 <script>
-  const url = "{% url 'cart:cart-ajax' %}";
+  const url_cart = "{% url 'cart:cart-ajax' %}";
 
   function add_in_cart(product_id) {
-    change_quantity_cart(url, 'add', product_id);
+    change_quantity_cart(url_cart, 'add', product_id);
   }
   function remove_in_cart(product_id) {
-    change_quantity_cart(url, 'remove', product_id);
+    change_quantity_cart(url_cart, 'remove', product_id);
   }
 </script>

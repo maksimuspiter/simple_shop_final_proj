@@ -36,15 +36,7 @@ class AllProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
-        product_ids_in_cart = Cart(self.request).get_products_ids()
-        compare = Compare(self.request)
-        context["compare"] = compare
-        context["all_products_in_compare"] = compare.get_all_products()
         context["categories"] = categories
-        context["product_ids_in_cart"] = product_ids_in_cart
-        context["cart_products_with_quantity"] = Cart(
-            self.request
-        ).get_products_with_quantity()
         return context
 
 
@@ -72,16 +64,11 @@ class ProductsByTag(AllProductListView):
 
 
 def product_detail(request, id, slug):
-    cart = Cart(request)
     product = get_object_or_404(
         Product.objects.prefetch_related("tags"), id=id, slug=slug, available=True
     )
     categories = Category.objects.all()
-
     product_slider_img = ProductImageItem.objects.filter(product=product)
-    products_in_cart_quantity = cart.get_product_quantity(product.id)
-
-    # related_products = Product.objects.filter(available=True, category=product.category)
     product_comments = product.comments.all().select_related("customer__account")[:10]
     related_products = Product.objects.all().order_by("category")
 
@@ -93,8 +80,6 @@ def product_detail(request, id, slug):
             "categories": categories,
             "product_slider_img": product_slider_img,
             "product_slider_img_range": range(len(product_slider_img)),
-            "cart": cart,
-            "products_in_cart_quantity": products_in_cart_quantity,
             "related_products": related_products,
             "product_comments": product_comments,
             "product_comments_len": len(product_comments),

@@ -8,7 +8,14 @@
       
       <div class="col-md-6">
         <div class="small mb-1">SKU: {{product.slug}}</div>
-        <h1 class="display-5 fw-bolder text-center">{{product.name}}</h1>
+        <h1 class="display-5 fw-bolder text-center">{{product.name}}
+          <button
+          {% if product.id in compare.get_all_products %} class="btn btn-success btn-sm"
+          {% else %} class="btn btn-primary btn-sm"
+          {% endif %} id="buttom-in-compare-{{product.id}}" onclick="in_compare('{{product.id}}')">сравнить
+        </button>
+        </h1>
+
         <div>
           {% with rating=product.rating %}
               {% include "shop/product/include/product_stars.html" %}

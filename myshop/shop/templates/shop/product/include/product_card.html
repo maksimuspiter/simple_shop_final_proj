@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-between">
                 <div class="badge bg-dark text-white" >Sale</div>
                 <button
-                {% if product.id in all_products_in_compare %} class="btn btn-success btn-sm"
+                {% if product.id in compare.get_all_products %} class="btn btn-success btn-sm"
                 {% else %} class="btn btn-primary btn-sm"
                 {% endif %} id="buttom-in-compare-{{product.id}}" onclick="in_compare('{{product.id}}')">сравнить</button>
             </div>
@@ -39,7 +39,7 @@
         <!-- Product actions-->
         <div class="p-2">
           <div class="card-footer d-flex justify-content-center">
-              {% with products_in_cart_quantity=cart_products_with_quantity|get_item:product.id %}
+              {% with products_in_cart_quantity=cart.get_products_with_quantity|get_item:product.id %}
                   {% include "shop/product/include/button_in_cart.html" %}
               {% endwith %}
           </div>
