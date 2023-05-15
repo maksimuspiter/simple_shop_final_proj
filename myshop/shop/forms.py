@@ -39,7 +39,9 @@ class CommentImageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["image"].widget.attrs.update(
-            {"class": "form-control form-control-sm"}
+            {
+                # "id": "upload_review_img", 
+                "class": "form-control form-control-sm"}
         )
 
     class Meta:
@@ -47,4 +49,4 @@ class CommentImageForm(forms.ModelForm):
         fields = ["image"]
 
 
-CommentImageFormSet = forms.formset_factory(CommentImageForm, extra=3)
+# CommentImageFormSet = forms.formset_factory(CommentImageForm, extra=3)

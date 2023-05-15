@@ -7,8 +7,9 @@ from cart.cart import Cart
 from compare.compare import Compare
 from cart.forms import CartAddProductForm
 from django.views.generic import ListView, DeleteView
-from .forms import ReviewForm, CommentImageFormSet, CommentImageForm
+from .forms import ReviewForm, CommentImageForm
 from django.contrib.auth.decorators import login_required
+from django import forms
 
 
 class AllProductListView(ListView):
@@ -37,7 +38,6 @@ class AllProductListView(ListView):
         categories = Category.objects.all()
         product_ids_in_cart = Cart(self.request).get_products_ids()
         compare_len = len(Compare(self.request))
-        print('views', compare_len)
         context["compare_len"] = compare_len
         context["categories"] = categories
         context["product_ids_in_cart"] = product_ids_in_cart
@@ -103,6 +103,15 @@ def product_detail(request, id, slug):
 
 @login_required
 def create_review(request, product_id):
+    extra_fields = 3
+    CommentImageFormSet = forms.formset_factory(CommentImageForm, extra=extra_fields)
+    formset = CommentImageFormSet(
+        initial=[
+            {
+                "title": "Django is now open source",
+            }
+        ]
+    )
     product = get_object_or_404(Product, pk=product_id)
     if request.method == "POST":
         form = ReviewForm(data=request.POST)
@@ -128,8 +137,14 @@ def create_review(request, product_id):
     else:
         form = ReviewForm()
         form_img = CommentImageFormSet()
+
     return render(
         request,
         "shop/comment/create.html",
-        {"form": form, "product": product, "form_img": form_img},
+        {
+            "form": form,
+            "product": product,
+            "form_img": form_img,
+            "extra_fields": extra_fields,
+        },
     )
