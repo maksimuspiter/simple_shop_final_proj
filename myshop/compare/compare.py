@@ -14,31 +14,33 @@ class Compare:
         self.compare = compare
 
     def __iter__(self):
-        products = Product.objects.filter(id__in=self.compare)
-
-        for product in products:
-            yield product
+        for product_id in self.compare:
+            yield product_id
 
     def __len__(self):
-        print("LEN", len(self.compare))
         return len(self.compare)
 
     def add(self, product_id):
         product_id = int(product_id)
-        print('asdds')
 
         if product_id not in self.compare:
             self.compare.append(product_id)
-        self.save()
+            self.save()
+            return True
 
     def save(self):
         self.session.modified = True
 
-    def remove(self, product):
-        product_id = str(product.id)
-        self.compare.remove(product_id)
-        self.save()
+    def remove(self, product_id):
+        product_id = int(product_id)
+        if product_id in self.compare:
+            self.compare.remove(product_id)
+            self.save()
+            return True
 
     def clear(self):
         del self.session[settings.COMPARE_SESSION_ID]
         self.save()
+
+    def get_all_products(self):
+        return [product for product in self.compare]
