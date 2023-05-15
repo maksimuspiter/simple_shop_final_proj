@@ -37,8 +37,9 @@ class AllProductListView(ListView):
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
         product_ids_in_cart = Cart(self.request).get_products_ids()
-        compare_len = len(Compare(self.request))
-        context["compare_len"] = compare_len
+        compare = Compare(self.request)
+        context["compare"] = compare
+        context["all_products_in_compare"] = compare.get_all_products()
         context["categories"] = categories
         context["product_ids_in_cart"] = product_ids_in_cart
         context["cart_products_with_quantity"] = Cart(

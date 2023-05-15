@@ -69,3 +69,18 @@ function change_buttons(product_id, quantity) {
       button_quantity.innerHTML = quantity + " шт.";
   }
 }
+
+function change_compare_quantity(quantity) {
+  document.getElementById("product_in_compare_quantity_navbar").innerHTML =
+    quantity;
+}
+function change_button_style(product_id) {
+  const button = document.getElementById("buttom-in-compare-" + product_id);
+  if (button.classList.contains("btn-primary")) {
+    button.classList.remove("btn-primary");
+    button.classList.add("btn-success");
+  } else if (button.classList.contains("btn-success")) {
+    button.classList.remove("btn-success");
+    button.classList.add("btn-primary");
+  }
+}

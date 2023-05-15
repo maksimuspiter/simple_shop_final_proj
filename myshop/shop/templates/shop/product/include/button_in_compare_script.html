@@ -1,0 +1,29 @@
+{% load static %}
+
+<script>
+  let url_compare = "{% url 'compare:in-compare' %}";
+
+  function in_compare(product_id) {
+    $.ajax({
+      url: url_compare,
+      type: "POST",
+      data: jQuery.param({ product_id: product_id }),
+      dataType: "json",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      success: (data) => {
+        console.log(data);
+        if (data.result) {
+          change_compare_quantity(data.compare_len);
+          change_button_style(product_id);
+        }
+      },
+
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+</script>

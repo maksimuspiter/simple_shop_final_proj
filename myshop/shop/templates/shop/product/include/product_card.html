@@ -6,10 +6,10 @@
             <!-- Sale badge-->
             <div class="d-flex justify-content-between">
                 <div class="badge bg-dark text-white" >Sale</div>
-                <form action="{% url 'compare:add-in-compare' product.id %}" method="post">
-                    {% csrf_token %}
-                    <button  class="badge bg-dark text-white" type="submit">сравнить</button>
-                </form>
+                <button
+                {% if product.id in all_products_in_compare %} class="btn btn-success btn-sm"
+                {% else %} class="btn btn-primary btn-sm"
+                {% endif %} id="buttom-in-compare-{{product.id}}" onclick="in_compare('{{product.id}}')">сравнить</button>
             </div>
             <!-- Product image-->
             <a href="{{product.get_absolute_url}}">

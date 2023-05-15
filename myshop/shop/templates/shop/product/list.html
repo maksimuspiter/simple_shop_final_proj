@@ -24,6 +24,10 @@
           </div>
       </div>
   </section>
-  {% include "shop/product/include/button_in_cart_script.html" %}
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'base_products/js/to_cart.js' %}"></script>
+
+  {% include "shop/product/include/button_in_cart_script.html" %}
+  {% include "shop/product/include/button_in_compare_script.html" %}
 {% endblock %}
