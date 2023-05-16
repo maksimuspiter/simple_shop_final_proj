@@ -91,13 +91,6 @@ def product_detail(request, id, slug):
 def create_review(request, product_id):
     extra_fields = 3
     CommentImageFormSet = forms.formset_factory(CommentImageForm, extra=extra_fields)
-    formset = CommentImageFormSet(
-        initial=[
-            {
-                "title": "Django is now open source",
-            }
-        ]
-    )
     product = get_object_or_404(Product, pk=product_id)
     if request.method == "POST":
         form = ReviewForm(data=request.POST)
