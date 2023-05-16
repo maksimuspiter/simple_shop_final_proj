@@ -1,8 +1,11 @@
 {% extends 'base_products/base_products.html' %} 
 {% load static %}
+{% load cache %}
 
 {% block title %}
-    {{product.category.name}}: {{product.name}}
+    {% cache 900 product_detail_title product.id %}
+        {{product.category.name}}: {{product.name}}
+    {% endcache %}
 {% endblock %}
 
 {% block categories %}
@@ -11,40 +14,42 @@
 
 
 {% block content %}
+    {% cache 900 product_single_content product.id %}
 
-    {% include "shop/product/include/product_card_single.html" %}
-    
-    {% if related_products%}
-        <h2 class="fw-bolder mb-4 text-center">Похожие товары</h2>
-        {% include "shop/product/include/related_product_for_detail.html" %}
-    {% endif %}
+        {% include "shop/product/include/product_card_single.html" %}
 
-    <hr>
-    {% if product_comments%}
-        <div class="mt-4 row ">
-            <div class="col">
-                <div class="d-flex justify-content-center">
+        {% if related_products%}
+            <h2 class="fw-bolder mb-4 text-center">Похожие товары</h2>
+            {% include "shop/product/include/related_product_for_detail.html" %}
+        {% endif %}
 
-                    <div class="mb-4 text-center">
-                        <h2>Отзывы о товаре </h2>
-                    </div>
-                    <div>
-                        <span class="badge bg-info text-white ms-1 rounded-pill">{{product_comments_len}}</span>
+        <hr>
+        {% if product_comments%}
+            <div class="mt-4 row ">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+
+                        <div class="mb-4 text-center">
+                            <h2>Отзывы о товаре </h2>
+                        </div>
+                        <div>
+                            <span class="badge bg-info text-white ms-1 rounded-pill">{{product_comments_len}}</span>
+                        </div>
                     </div>
                 </div>
+                <div class="col">
+                    <a href="{% url 'shop:create_review' product.id %}"><h3>Написать отзыв</h3></a>
+                </div>
             </div>
-            <div class="col">
-                <a href="{% url 'shop:create_review' product.id %}"><h3>Написать отзыв</h3></a>
+            <div class="ms-5 me-5 mt-1">
+                {% include "shop/product/include/product_comments.html" %}
             </div>
-        </div>
-        <div class="ms-5 me-5 mt-1">
-            {% include "shop/product/include/product_comments.html" %}
-        </div>
-    {% endif %}
+        {% endif %}
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="{% static 'base_products/js/to_cart.js' %}"></script>
-    {% include "shop/product/include/button_in_cart_script.html" %}
-    {% include "shop/product/include/button_in_compare_script.html" %}
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="{% static 'base_products/js/to_cart.js' %}"></script>
+        {% include "shop/product/include/button_in_cart_script.html" %}
+        {% include "shop/product/include/button_in_compare_script.html" %}
 
+    {% endcache %}
 {% endblock %}

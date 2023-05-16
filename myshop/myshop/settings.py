@@ -146,12 +146,7 @@ COMPARE_SESSION_ID = "compare"
 LOGIN_URL = "account:my_account-login"
 LOGOUT_URL = "account:my_account-logout"
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379",
-#     }
-# }
+
 REDIS_HOST = "127.0.0.1"
 REDIS_PORT = "6379"
 
@@ -162,3 +157,12 @@ CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/1",
+    }
+}
+# Cache time to live is 15 minutes.
+CACHE_TTL = 60 * 15
