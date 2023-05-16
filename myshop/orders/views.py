@@ -11,6 +11,7 @@ from .models import OrderItem, Status
 from shop.models import Cupon
 from account.models import Account
 
+
 @login_required
 def order_create(request):
     cart = Cart(request)
@@ -19,10 +20,9 @@ def order_create(request):
         if form.is_valid():
             order = form.save(commit=False)
             order.customer = request.user.account
-            order.status = Status.objects.get(slug="sozdano")
-            order.total_price = cart.get_total_price_with_discount() + Decimal(
-                order.delivery.price
-            )
+            # order.status = Status.objects.get(slug="sozdano")
+            delivery_price = order.delivery.price if order.delivery else 0
+            order.total_price = cart.get_total_price_with_discount() + delivery_price
             order.save()
 
             for item in cart:
