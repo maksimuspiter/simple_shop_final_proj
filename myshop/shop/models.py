@@ -149,6 +149,7 @@ class CommentImage(models.Model):
         upload_to="comment_img/%Y/%m/%d", blank=True, verbose_name="Фото"
     )
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    active = models.BooleanField(default=True, verbose_name="Активный")
 
     class Meta:
         ordering = ["created"]
