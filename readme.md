@@ -3,10 +3,10 @@
 <ul>
   <li>Django 4.2</li>
   <li>Python >= 3.10</li>
+   <li>PostgreSQL</li>
   <li>Bootstrap 5</li>
   <li>Celery</li>
   <li>Redis</li>
-  <li>sqlite3</li>
   <li>ajax</li>
   <li>Intersection Observer API</li>
 </ul>
@@ -42,9 +42,7 @@
 <p>python3 -m venv venv </p>
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
-<h5>Create file .env:</h5>
-
-<p>create file .env </p>
+<p>create file .env with</p>
 <ul>
   <li>DEBUG</li>
   <li>SECRET_KEY</li>
@@ -55,6 +53,7 @@
   <li>DB_HOST</li>
   <li>DB_PORT</li>
 </ul>
+<p>makemigrations and migrate</p>
 
 #Future improvements:
 
