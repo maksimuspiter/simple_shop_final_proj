@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from .tasks import update_product_raiting
 
+
 class AllProductListView(ListView):
     context_object_name = "products"
     template_name = "shop/product/list.html"
@@ -115,7 +116,7 @@ def create_review(request, product_id):
 
     else:
         form = ReviewForm()
-        form_img = CommentImageFormSet()
+        form_img = CommentImageFormSet
 
     return render(
         request,
