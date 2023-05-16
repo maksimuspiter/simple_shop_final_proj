@@ -13,6 +13,7 @@ kombu==5.2.4
 Pillow==9.5.0
 prompt-toolkit==3.0.38
 psycopg2-binary==2.9.6
+python-dotenv==1.0.0
 pytz==2023.3
 redis==4.5.5
 six==1.16.0
