@@ -34,6 +34,7 @@
     <p>Ajax-change unread messages in selected chat when user scrolls down the page (used Intersection Observer API)</p>
     <p>Ajax form window to send message</p>
   </li>
+  <li>Account = OneToOneField, account page only for LoginRequired (when creating a superuser, you need to create an account for him)</li>
 
 </ul>
 
@@ -41,6 +42,19 @@
 <p>python3 -m venv venv </p>
 <p>source venv/bin/activate</p>
 <p>pip install -r requirements.txt</p>
+<h5>Create file .env:</h5>
+
+<p>create file .env </p>
+<ul>
+  <li>DEBUG</li>
+  <li>SECRET_KEY</li>
+  <li>DJANGO_ALLOWED_HOSTS</li>
+  <li>DB_NAME</li>
+  <li>DB_USER</li>
+  <li>DB_PASS</li>
+  <li>DB_HOST</li>
+  <li>DB_PORT</li>
+</ul>
 
 #Future improvements:
 
@@ -48,13 +62,6 @@
   <li>Refactor comment --> hide forms</li>
   <li>Add e-check</li>
   <li>Refactor product comparison</li>
-</ul>
-
-#TODO:
-
-<ul>  
-<li>Change database --> PostgreSQL</li>
-
   <li>Add Django REST framework</li>
   <li>Add EditorConfig</li>
   <li>Add Docker</li>
