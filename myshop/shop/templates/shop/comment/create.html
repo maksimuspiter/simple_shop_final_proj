@@ -58,12 +58,7 @@
 
             <div class="row mt-3" >
                 <div class="col mb-3" style="max-width: 300px;" id="upload-imgs-form-fields">
-
-                    {% for form in form_img %}
-                    <div class="p-1" id="form-add-img-{{forloop.counter0}}">
-                        {{form.image}}
-                    </div>
-                    {% endfor %}
+                    {{form_img}}
                 </div>
 
                 <div class="col text-center mt-3 mb-0">
