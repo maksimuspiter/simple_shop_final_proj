@@ -10,7 +10,7 @@ from django.views.generic import ListView, DeleteView
 from .forms import ReviewForm, CommentImageForm
 from django.contrib.auth.decorators import login_required
 from django import forms
-
+from .tasks import update_product_raiting
 
 class AllProductListView(ListView):
     context_object_name = "products"
@@ -110,7 +110,7 @@ def create_review(request, product_id):
             for image in imges:
                 if image.get("image"):
                     CommentImage.objects.create(comment=comment, image=image["image"])
-            product.update_product_rating()
+            update_product_raiting.delay(product.id)
             return redirect("account:my_account")
 
     else:

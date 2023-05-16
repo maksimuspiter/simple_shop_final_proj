@@ -93,6 +93,7 @@ class Product(models.Model):
             "product_score__avg"
         ]
         self.save()
+        return self.rating
 
 
 class ProductImageItem(models.Model):
