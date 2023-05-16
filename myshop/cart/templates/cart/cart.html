@@ -40,30 +40,14 @@
 </div>
 
 {% endfor %}
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="{% static 'cart/js/change_quantity.js' %}"></script>
-<script>
-    function select_val(select_id, value){
-        const url = "{% url 'cart:quantity-change-ajax'%}";
-        const product_id = Number(select_id.slice(-1));
-        const product_price_id = "product_sum_price-" + product_id;
-        console.log(product_price_id);
-        change_quantity_ajax(url, product_id, value, product_price_id);
-    }
-
-</script>  
-
-
 {% endblock %}
 
 {% block total_price %}
     <span>Цена: </span><span id="cart_total_price">{{ cart.get_total_price }}</span><span> ₽</span>
 {% endblock %}
 
+
 {% block right_side %}
-
-
 {% if cart|length > 0%}
     <div class="mt-4 mb-4 text-center">   
         <form action="{% url 'orders:order_create' %}">
@@ -81,7 +65,6 @@
     </div>
       
 {% endif %}
-  
 {% endblock %}
 
 {% block favorite_products %}
