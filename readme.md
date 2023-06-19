@@ -36,12 +36,14 @@
 </ul>
 
 <h4>To start:</h4>
+
 ```bash
 python3 -m venv venv
+```
 source venv/bin/activate
 pip install -r requirements.txt
 touch .env (DEBUG, SECRET_KEY, DJANGO_ALLOWED_HOSTS, DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT)
 ./manage.py makemigrations 
 ./manage.py migrate
-```
+
 
