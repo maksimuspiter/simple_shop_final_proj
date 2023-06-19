@@ -40,10 +40,20 @@
 ```bash
 python3 -m venv venv
 ```
+```bash
 source venv/bin/activate
+```
+```bash
 pip install -r requirements.txt
+```
+```bash
 touch .env (DEBUG, SECRET_KEY, DJANGO_ALLOWED_HOSTS, DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT)
+```
+```bash
 ./manage.py makemigrations 
+```
+```bash
 ./manage.py migrate
+```
 
 
