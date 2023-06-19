@@ -1,17 +1,14 @@
-<h1>Simple Shop</h1>
-<h2>Stack:</h2>
-<ul>
-  <li>Django 4.2</li>
-  <li>Python >= 3.10</li>
-   <li>PostgreSQL</li>
-  <li>Bootstrap 5</li>
-  <li>Celery</li>
-  <li>Redis</li>
-  <li>ajax</li>
-  <li>Intersection Observer API</li>
-</ul>
+# Simple Shop
+#### Backend
+- Django 4.2
+- PostgreSQL
+- Bootstrap 5
+- Celery
+- Redis
+- ajax
+- Intersection Observer API
 
-<h3>Elements:</h3>
+##### Elements:
 
 <ul>
   <li>Product List with category, tags and filters</li>
@@ -39,29 +36,12 @@
 </ul>
 
 <h4>To start:</h4>
-<p>python3 -m venv venv </p>
-<p>source venv/bin/activate</p>
-<p>pip install -r requirements.txt</p>
-<p>create file .env with</p>
-<ul>
-  <li>DEBUG</li>
-  <li>SECRET_KEY</li>
-  <li>DJANGO_ALLOWED_HOSTS</li>
-  <li>DB_NAME</li>
-  <li>DB_USER</li>
-  <li>DB_PASS</li>
-  <li>DB_HOST</li>
-  <li>DB_PORT</li>
-</ul>
-<p>makemigrations and migrate</p>
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+touch .env (DEBUG, SECRET_KEY, DJANGO_ALLOWED_HOSTS, DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT)
+./manage.py makemigrations 
+./manage.py migrate
+```
 
-#Future improvements:
-
-<ul>
-  <li>Refactor comment --> hide forms</li>
-  <li>Add e-check</li>
-  <li>Refactor product comparison</li>
-  <li>Add Django REST framework</li>
-  <li>Add EditorConfig</li>
-  <li>Add Docker</li>
-</ul>
